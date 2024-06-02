@@ -23,9 +23,14 @@ typedef struct {
 
 stUsuario cargarUnUsuario(int idUsuario);
 void mostrarUnUsuario(stUsuario usuario);
-void agregarLibroFavorito(stUsuario* usuario, int idLibro);
-void eliminarLibroFavorito(stUsuario* usuario, int idLibro);
+void agregarLibroFavorito(stUsuario* usuario, int idLibro);                         //usuario/administrador
+void eliminarLibroFavorito(stUsuario* usuario, int idLibro);                        //usuario/administrador
 void eliminarUsuario(stUsuario* usuario);
+void mostrarTodosUsuarios(const char *filename);
+int validarEmail(const char *email);
+int validarPassword(const char *password);
+int emailRegistrado(const char *filename, const char *email);                                           //administrador
+
 
 
 #endif // USUARIO_H_INCLUDED

@@ -31,9 +31,25 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="comentarios.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="comentarios.h" />
+		<Unit filename="domicilio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="domicilio.h" />
+		<Unit filename="libros.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libros.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="usuario.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="usuario.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

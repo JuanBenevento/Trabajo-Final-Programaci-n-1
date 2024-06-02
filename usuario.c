@@ -6,7 +6,7 @@
 
 #include "usuario.h"
 
-// Función para cargar un usuario
+// Funcion para cargar un usuario
 stUsuario cargarUnUsuario(int idUsuario) {
     stUsuario usuario;
     usuario.idUsuario = idUsuario;
@@ -14,19 +14,24 @@ stUsuario cargarUnUsuario(int idUsuario) {
     char aux[100];
     printf("\n***********************************************");
     printf("\n");
-    printf("\nIngrese el email: ");
-    fflush(stdin);
-    scanf("%s", usuario.email);
 
-    printf("\nIngrese la contraseña: ");
-    fflush(stdin);
-    scanf("%s", usuario.password);
+    do {
+        printf("\nIngrese su email: ");
+        fflush(stdin);
+        gets(usuario.email);
+    } while (!validarEmail(usuario.email) || emailRegistrado("usuarios.dat", usuario.email));
+
+    do {
+        printf("\nIngrese su contrasenia: ");
+        fflush(stdin);
+        gets(usuario.password);
+    } while (!validarPassword(usuario.password));
 
     printf("\nIngrese el nombre de usuario: ");
     fflush(stdin);
     scanf("%s", usuario.username);
 
-    printf("\nIngrese el género (M/F): ");
+    printf("\nIngrese el genero (M/F): ");
     fflush(stdin);
     scanf(" %c", &usuario.genero);
 
@@ -40,14 +45,14 @@ stUsuario cargarUnUsuario(int idUsuario) {
 
     usuario.domicilio = cargaUnDomicilio();
 
-    printf("\nIngrese si es administrador (1 = Sí, 0 = No): ");
+    /*printf("\nIngrese si es administrador (1 = Si, 0 = No): ");
     scanf("%d", &usuario.esAdmin);
     printf("\n");
     printf("\n***********************************************");
-
+    */
     usuario.eliminado = 0;
 
-    // Inicializar libros favoritos con -1 (indicando vacío)
+    // Inicializar libros favoritos con -1 (indicando vacio)
     for (int i = 0; i < 50; i++) {
         usuario.librosFavoritos[i] = -1;
     }
@@ -55,14 +60,14 @@ stUsuario cargarUnUsuario(int idUsuario) {
     return usuario;
 }
 
-// Función para mostrar un usuario
+// Funcion para mostrar un usuario
 void mostrarUnUsuario(stUsuario usuario) {
     if (usuario.eliminado == 0) {
         printf("\n**********************************************");
         printf("\nID Usuario:....................%d", usuario.idUsuario);
         printf("\nEmail:.........................%s", usuario.email);
         printf("\nNombre de Usuario:.............%s", usuario.username);
-        printf("\nGénero:........................%c", usuario.genero);
+        printf("\nGenero:........................%c", usuario.genero);
         printf("\nFecha de Nacimiento:...........%s", usuario.fechaNacimiento);
         printf("\nDNI:...........................%s", usuario.dni);
         mostrarUnDomicilio(usuario.domicilio);
@@ -85,7 +90,7 @@ void mostrarUnUsuario(stUsuario usuario) {
     }
 }
 
-// Función para agregar un libro favorito a un usuario
+// Funcion para agregar un libro favorito a un usuario
 void agregarLibroFavorito(stUsuario* usuario, int idLibro) {
     for (int i = 0; i < 50; i++) {
         if (usuario->librosFavoritos[i] == -1) {
@@ -95,7 +100,7 @@ void agregarLibroFavorito(stUsuario* usuario, int idLibro) {
     }
 }
 
-// Función para eliminar un libro favorito de un usuario
+// Funcion para eliminar un libro favorito de un usuario
 void eliminarLibroFavorito(stUsuario* usuario, int idLibro) {
     for (int i = 0; i < 50; i++) {
         if (usuario->librosFavoritos[i] == idLibro) {
@@ -105,10 +110,49 @@ void eliminarLibroFavorito(stUsuario* usuario, int idLibro) {
     }
 }
 
-// Función para marcar un usuario como eliminado
+// Funcion para marcar un usuario como eliminado
 void eliminarUsuario(stUsuario* usuario) {
     usuario->eliminado = 1;
 }
 
+void mostrarTodosUsuarios(const char *filename) {
+    FILE *file = fopen(filename, "rb");
+    if (file != NULL) {
+        stUsuario usuario;
+        while (fread(&usuario, sizeof(stUsuario), 1, file) > 0) {
+            mostrarUnUsuario(usuario);
+        }
+        fclose(file);
+    } else {
+        printf("Error al abrir el archivo.\n");
+    }
+}
 
+int validarEmail(const char *email) {
+    return strstr(email, "@") && strstr(email, ".com");
+}
 
+int validarPassword(const char *password) {  //A esta funcion le podemos agregar un minimo de caracteres tambien
+    int tieneMayuscula = 0;
+    int tieneMinuscula = 0;
+    for (int i = 0; password[i] != '\0'; i++) {
+        if (isupper(password[i])) tieneMayuscula = 1;
+        if (islower(password[i])) tieneMinuscula = 1;
+    }
+    return tieneMayuscula && tieneMinuscula;
+}
+
+int emailRegistrado(const char *filename, const char *email) {
+    FILE *file = fopen(filename, "rb");
+    if (file != NULL) {
+        stUsuario usuario;
+        while (fread(&usuario, sizeof(stUsuario), 1, file) > 0) {
+            if (usuario.eliminado == 0 && strcmp(usuario.email, email) == 0) {
+                fclose(file);
+                return 1;
+            }
+        }
+        fclose(file);
+    }
+    return 0;
+}

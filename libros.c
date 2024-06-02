@@ -2,27 +2,32 @@
 #include <stdlib.h>
 #include <string.h>
 #include "libros.h"
-//S e crea una variable para crear el contador de ID.
+
+// Variable global para llevar el conteo del ID de los libros
 int idLibroCounter = 0;
 
 stLibro agregarLibro() {
     stLibro nuevoLibro;
 
-    nuevoLibro.idLibro = ++idLibroCounter;//Funcion incrementa el contador de ID.
+    nuevoLibro.idLibro = ++idLibroCounter;
 
-    printf("Ingrese el título del libro: ");
+    printf("Ingrese el titulo del libro: ");
+    fflush(stdin);
     fgets(nuevoLibro.titulo, 100, stdin);
     nuevoLibro.titulo[strcspn(nuevoLibro.titulo, "\n")] = '\0';
 
     printf("Ingrese la editorial: ");
+    fflush(stdin);
     fgets(nuevoLibro.editorial, 50, stdin);
     nuevoLibro.editorial[strcspn(nuevoLibro.editorial, "\n")] = '\0';
 
     printf("Ingrese el autor: ");
+    fflush(stdin);
     fgets(nuevoLibro.autor, 50, stdin);
     nuevoLibro.autor[strcspn(nuevoLibro.autor, "\n")] = '\0';
 
-    printf("Ingrese la categoría: ");
+    printf("Ingrese la categoria: ");
+    fflush(stdin);
     fgets(nuevoLibro.categoria, 50, stdin);
     nuevoLibro.categoria[strcspn(nuevoLibro.categoria, "\n")] = '\0';
 
@@ -35,10 +40,79 @@ stLibro agregarLibro() {
 void mostrarLibro(stLibro libro) {
     if (libro.eliminado == 0) {
         printf("ID: %d\n", libro.idLibro);
-        printf("Título: %s\n", libro.titulo);
+        printf("Titulo: %s\n", libro.titulo);
         printf("Editorial: %s\n", libro.editorial);
         printf("Autor: %s\n", libro.autor);
-        printf("Categoría: %s\n", libro.categoria);
-        printf("Valoración: %.2f\n", libro.valoracion);
+        printf("Categoria: %s\n", libro.categoria);
+        printf("Valoracion: %.2f\n", libro.valoracion);
+    }
+}
+
+void mostrarLibros(stLibro libros[], int cantidad) {
+    for (int i = 0; i < cantidad; i++) {
+        mostrarLibro(libros[i]);
+    }
+}
+
+int cargarLibros(const char *filename, stLibro libros[], int maxLibros) {
+    int cantidad = 0;
+    FILE *file = fopen(filename, "rb");
+    if (file != NULL) {
+        while (fread(&libros[cantidad], sizeof(stLibro), 1, file) > 0 && cantidad < maxLibros) {
+            if (libros[cantidad].idLibro > idLibroCounter) {
+                idLibroCounter = libros[cantidad].idLibro;
+            }
+            cantidad++;
+        }
+        fclose(file);
+    }
+    return cantidad;
+}
+
+void guardarLibros(const char *filename, stLibro libros[], int cantidad) {
+    FILE *file = fopen(filename, "wb");
+    if (file != NULL) {
+        fwrite(libros, sizeof(stLibro), cantidad, file);
+        fclose(file);
+    } else {
+        printf("Error al abrir el archivo.\n");
+    }
+}
+
+void agregarLibroLista(stLibro libros[], int *cantidad, stLibro nuevoLibro) {
+    libros[*cantidad] = nuevoLibro;
+    (*cantidad)++;
+}
+
+void eliminarLibro(stLibro libros[], int *cantidad, int idLibro) {
+    for (int i = 0; i < *cantidad; i++) {
+        if (libros[i].idLibro == idLibro) {
+            libros[i].eliminado = 1;
+            break;
+        }
+    }
+}
+
+void mostrarLibrosPorCategoria(stLibro libros[], int cantidad, const char *categoria) {
+    for (int i = 0; i < cantidad; i++) {
+        if (libros[i].eliminado == 0 && strcmp(libros[i].categoria, categoria) == 0) {
+            mostrarLibro(libros[i]);
+        }
+    }
+}
+
+void mostrarLibrosPorAutor(stLibro libros[], int cantidad, const char *autor) {
+    for (int i = 0; i < cantidad; i++) {
+        if (libros[i].eliminado == 0 && strcmp(libros[i].autor, autor) == 0) {
+            mostrarLibro(libros[i]);
+        }
+    }
+}
+
+void buscarLibrosPorTitulo(stLibro libros[], int cantidad, const char *titulo) {
+    for (int i = 0; i < cantidad; i++) {
+        if (libros[i].eliminado == 0 && strstr(libros[i].titulo, titulo) != NULL) {
+            mostrarLibro(libros[i]);
+        }
     }
 }

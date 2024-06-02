@@ -1,17 +1,17 @@
 # depslib dependency file v1.0
-1717123793 source:c:\users\juanm\onedrive\escritorio\tp final\trabajofinalprog1\libros.c
+1717288498 source:c:\users\juanm\onedrive\escritorio\tp final\trabajofinalprog1\libros.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"libros.h"
 
-1717111926 c:\users\juanm\onedrive\escritorio\tp final\trabajofinalprog1\libros.h
+1717287983 c:\users\juanm\onedrive\escritorio\tp final\trabajofinalprog1\libros.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<conio.h>
 
-1717127828 source:c:\users\juanm\onedrive\escritorio\tp final\trabajofinalprog1\main.c
+1717288498 source:c:\users\juanm\onedrive\escritorio\tp final\trabajofinalprog1\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -33,7 +33,7 @@
 	<string.h>
 	"comentarios.h"
 
-1717127652 source:c:\users\juanm\onedrive\escritorio\tp final\trabajofinalprog1\usuario.c
+1717288887 source:c:\users\juanm\onedrive\escritorio\tp final\trabajofinalprog1\usuario.c
 	"usuario.h"
 	<stdio.h>
 	<stdlib.h>
@@ -41,7 +41,7 @@
 	<ctype.h>
 	"usuario.h"
 
-1717123892 c:\users\juanm\onedrive\escritorio\tp final\trabajofinalprog1\usuario.h
+1717285144 c:\users\juanm\onedrive\escritorio\tp final\trabajofinalprog1\usuario.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
