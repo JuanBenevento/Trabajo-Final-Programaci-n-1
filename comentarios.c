@@ -8,7 +8,7 @@
 int idComentarioCounter = 0;
 
 // Función para inicializar un nuevo comentario
-stComentario cargarComentario() {
+stComentario agregarComentario() {
     stComentario nuevoComentario;
     nuevoComentario.idComentario = ++idComentarioCounter; // Incrementar y asignar el nuevo ID
 
@@ -36,6 +36,7 @@ stComentario cargarComentario() {
 
     nuevoComentario.eliminado = 0; // El comentario se marca como activo
 
+
     return nuevoComentario;
 }
 
@@ -51,6 +52,42 @@ void mostrarComentario(stComentario comentario) {
     } else {
         printf("El comentario con ID %d esta eliminado.\n", comentario.idComentario);
     }
+}
+
+void mostrarComentarios(stComentario comentario[], int cantidad) {
+    for (int i = 0; i < cantidad; i++) {
+        mostrarComentario(comentario[i]);
+    }
+}
+
+int cargarComentario(const char *filename, stComentario comentario[], int maxComentario) {
+    int cantidad = 0;
+    FILE *file = fopen(filename, "rb");
+    if (file != NULL) {
+        while (fread(&comentario[cantidad], sizeof(stComentario), 1, file) > 0 && cantidad < maxComentario) {
+            if (comentario[cantidad].idComentario > idComentarioCounter) {
+                idComentarioCounter = comentario[cantidad].idComentario;
+            }
+            cantidad++;
+        }
+        fclose(file);
+    }
+    return cantidad;
+}
+
+void guardarComentario(const char *filename, stComentario comentario[], int cantidad) {
+    FILE *file = fopen(filename, "wb");
+    if (file != NULL) {
+        fwrite(comentario, sizeof(stComentario), cantidad, file);
+        fclose(file);
+    } else {
+        printf("Error al abrir el archivo.\n");
+    }
+}
+
+void agregarComentarioLista(stComentario comentario[], int *cantidad, stComentario nuevoComentario) {
+    comentario[*cantidad] = nuevoComentario;
+    (*cantidad)++;
 }
 
 // Función para marcar un comentario como eliminado

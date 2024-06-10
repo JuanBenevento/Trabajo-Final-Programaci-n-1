@@ -18,10 +18,15 @@ typedef struct {
 } stComentario;
 
 
-stComentario cargarComentario();
+stComentario agregarComentario();
 void mostrarComentario(stComentario comentario);
+void mostrarComentarios(stComentario comentario[], int cantidad);
+int cargarComentario(const char *filename, stComentario comentario[], int maxComentario);
+void guardarComentario(const char *filename, stComentario comentario[], int cantidad);
+void agregarComentarioLista(stComentario comentario[], int *cantidad, stComentario nuevoComentario);
 void eliminarComentario(stComentario *comentario);
 
 
 
 #endif // COMENTARIOS_H_INCLUDED
+

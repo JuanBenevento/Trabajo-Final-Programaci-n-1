@@ -10,6 +10,8 @@
 
 #define MAX_LIBROS 200
 #define LIBROS_FILE "libros.dat" // Definicion de LIBROS_FILE
+#define MAX_COMENTARIO 200
+#define COMENTARIO_FILE "comentario.dat"
 
 void registrarUsuario(const char *filename, int *idUsuario);
 int iniciarSesion(const char *filename, stUsuario *usuarioLogueado);
@@ -17,16 +19,21 @@ void modificarInformacionPersonal(const char *filename, stUsuario *usuarioLoguea
 void desloguearse(stUsuario *usuarioLogueado);
 void darDeBajaUsuario(const char *filename);
 void eliminarLibroDefinitivamente(stLibro libros[], int *cantidad, int idLibro, const char *librosFilename);
+void mostrarLibrosConCometarios (stLibro libros[], int cantidadLib, stComentario comentario[], int cantidadCom);
 
 int main() {
     int option;
     int idUsuario = 1;  // Iniciar el ID de usuario con 1 (puedes cargar el último ID usado desde el archivo)
     stUsuario usuarioLogueado;
     stLibro libros[MAX_LIBROS];
+    stComentario comentario[MAX_COMENTARIO];
+    int cantidadComentario = 0;
     int cantidadLibros = 0;
 
     // Cargar los libros desde el archivo
     cantidadLibros = cargarLibros(LIBROS_FILE, libros, MAX_LIBROS);
+    cantidadComentario = cargarComentario(COMENTARIO_FILE, comentario, MAX_COMENTARIO);
+
 
     do {
         printf("TP Final Programacion 1 - Propuesta de la catedra");
@@ -78,7 +85,29 @@ int main() {
                                 break;
                             }
                             case 2:
-                                mostrarLibros(libros, cantidadLibros);
+                                mostrarLibrosConCometarios(libros, cantidadLibros, comentario, cantidadComentario);
+                                int elegir;
+                                do{
+                                        printf("\n***********************************************");
+                                        printf("\n");
+                                        printf("\n1- Comentar libro");
+                                        printf("\n0- Salir");
+                                        printf("\n");
+                                        printf("\n***********************************************");
+                                        printf("\nIngrese una opcion: ");
+                                        fflush(stdin);
+                                        scanf("%d", &elegir);
+                                        getchar();
+
+                                    switch(elegir){
+                                        case 1:;
+                                            stComentario nuevoComentario = agregarComentario();
+                                            agregarComentarioLista(comentario, &cantidadComentario, nuevoComentario);
+                                            guardarComentario(COMENTARIO_FILE, comentario, cantidadComentario);
+                                            guardarLibros(LIBROS_FILE, libros, cantidadLibros);
+                                            break;
+                                    }
+                                }while (elegir != 0);
                                 break;
                             case 3: {
                                 char categoria[50];
@@ -98,6 +127,7 @@ int main() {
                             }
                             case 5: {
                                 char titulo[100];
+                                printf("\nBuscar respetando mayusculas y minusculas del titulo.\n");
                                 printf("Ingrese el titulo: ");
                                 fgets(titulo, 100, stdin);
                                 titulo[strcspn(titulo, "\n")] = '\0';
@@ -108,19 +138,16 @@ int main() {
                                 modificarInformacionPersonal("usuarios.dat", &usuarioLogueado);
                                 break;
                             case 7:
-                                desloguearse(&usuarioLogueado);
-                                break;
-                            case 8:
                                 if (usuarioLogueado.esAdmin) {
                                     mostrarTodosUsuarios("usuarios.dat");
                                 }
                                 break;
-                            case 9:
+                            case 8:
                                 if (usuarioLogueado.esAdmin) {
                                     darDeBajaUsuario("usuarios.dat");
                                 }
                                 break;
-                            case 10:
+                            case 9:
                                 if (usuarioLogueado.esAdmin) {
                                     int idLibro;
                                     printf("Ingrese el ID del libro a dar de baja: ");
@@ -129,7 +156,7 @@ int main() {
                                     guardarLibros(LIBROS_FILE, libros, cantidadLibros); // Usar LIBROS_FILE
                                 }
                                 break;
-                            case 11:
+                            case 10:
                                 if (usuarioLogueado.esAdmin) {
                                     int idLibro;
                                     printf("Ingrese el ID del libro a eliminar definitivamente: ");
@@ -239,7 +266,7 @@ void modificarInformacionPersonal(const char *filename, stUsuario *usuarioLoguea
     gets(usuarioLogueado->dni);
 
     // Guardar cambios en el archivo
-    FILE *file = fopen(filename, "rb+");
+    FILE *file = fopen(filename, "r+b");
     if (file != NULL) {
         stUsuario usuario;
         while (fread(&usuario, sizeof(stUsuario), 1, file) > 0) {
@@ -302,4 +329,15 @@ void eliminarLibroDefinitivamente(stLibro libros[], int *cantidad, int idLibro, 
         }
     }
     guardarLibros(librosFilename, libros, *cantidad); // Actualizar el archivo después de la eliminación
+}
+
+void mostrarLibrosConCometarios (stLibro libros[], int cantidadLib, stComentario comentario[], int cantidadCom){
+
+    for (int i = 0; i < cantidadLib; i++) {
+        mostrarLibro(libros[i]);
+        for ( int j =0; j < cantidadCom; j++){
+            mostrarComentario(comentario[j]);
+        }
+    }
+
 }

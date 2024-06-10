@@ -3,6 +3,7 @@
 #include <string.h>
 #include "libros.h"
 
+
 // Variable global para llevar el conteo del ID de los libros
 int idLibroCounter = 0;
 

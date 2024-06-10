@@ -6,6 +6,7 @@
 #include <string.h>
 #include <conio.h>
 
+
  typedef struct {
     int idLibro; /// único, autoincremental
     char titulo[100];
@@ -29,3 +30,4 @@ void buscarLibrosPorTitulo(stLibro libros[], int cantidad, const char *titulo);
 
 
 #endif // LIBROS_H_INCLUDED
+
