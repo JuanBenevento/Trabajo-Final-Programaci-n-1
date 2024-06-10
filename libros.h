@@ -6,6 +6,7 @@
 #include <string.h>
 #include <conio.h>
 
+
  typedef struct {
     int idLibro; /// único, autoincremental
     char titulo[100];

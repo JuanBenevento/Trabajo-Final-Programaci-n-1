@@ -1,17 +1,17 @@
 # depslib dependency file v1.0
-1717288498 source:c:\users\juanm\onedrive\escritorio\tp final\trabajofinalprog1\libros.c
+1717710918 source:c:\users\juanm\onedrive\escritorio\tp final\trabajofinalprog1\libros.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"libros.h"
 
-1717287983 c:\users\juanm\onedrive\escritorio\tp final\trabajofinalprog1\libros.h
+1717717792 c:\users\juanm\onedrive\escritorio\tp final\trabajofinalprog1\libros.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<conio.h>
 
-1717288498 source:c:\users\juanm\onedrive\escritorio\tp final\trabajofinalprog1\main.c
+1717717281 source:c:\users\juanm\onedrive\escritorio\tp final\trabajofinalprog1\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -21,19 +21,19 @@
 	"comentarios.h"
 	"domicilio.h"
 
-1717113219 c:\users\juanm\onedrive\escritorio\tp final\trabajofinalprog1\comentarios.h
+1717717792 c:\users\juanm\onedrive\escritorio\tp final\trabajofinalprog1\comentarios.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<conio.h>
 
-1717113653 source:c:\users\juanm\onedrive\escritorio\tp final\trabajofinalprog1\comentarios.c
+1717717792 source:c:\users\juanm\onedrive\escritorio\tp final\trabajofinalprog1\comentarios.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"comentarios.h"
 
-1717288887 source:c:\users\juanm\onedrive\escritorio\tp final\trabajofinalprog1\usuario.c
+1717453075 source:c:\users\juanm\onedrive\escritorio\tp final\trabajofinalprog1\usuario.c
 	"usuario.h"
 	<stdio.h>
 	<stdlib.h>
@@ -48,7 +48,7 @@
 	<conio.h>
 	"domicilio.h"
 
-1717122585 source:c:\users\juanm\onedrive\escritorio\tp final\trabajofinalprog1\domicilio.c
+1717452956 source:c:\users\juanm\onedrive\escritorio\tp final\trabajofinalprog1\domicilio.c
 	"domicilio.h"
 
 1717123660 c:\users\juanm\onedrive\escritorio\tp final\trabajofinalprog1\domicilio.h

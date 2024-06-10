@@ -19,12 +19,18 @@ stUsuario cargarUnUsuario(int idUsuario) {
         printf("\nIngrese su email: ");
         fflush(stdin);
         gets(usuario.email);
+        if (!validarEmail(usuario.email)){
+            printf("Email no valido.");
+        }
     } while (!validarEmail(usuario.email) || emailRegistrado("usuarios.dat", usuario.email));
 
     do {
         printf("\nIngrese su contrasenia: ");
         fflush(stdin);
         gets(usuario.password);
+        if (!validarPassword(usuario.password)){
+            printf("Contrasenia no valida.");
+        }
     } while (!validarPassword(usuario.password));
 
     printf("\nIngrese el nombre de usuario: ");
@@ -45,11 +51,11 @@ stUsuario cargarUnUsuario(int idUsuario) {
 
     usuario.domicilio = cargaUnDomicilio();
 
-    /*printf("\nIngrese si es administrador (1 = Si, 0 = No): ");
+    printf("\nIngrese si es administrador (1 = Si, 0 = No): ");
     scanf("%d", &usuario.esAdmin);
     printf("\n");
     printf("\n***********************************************");
-    */
+
     usuario.eliminado = 0;
 
     // Inicializar libros favoritos con -1 (indicando vacio)
