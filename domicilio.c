@@ -5,7 +5,7 @@ stDomicilio cargaUnDomicilio(){
 
     stDomicilio domicilio;
 
-    char aux [100];
+    char aux [1000];
 
     printf("\n Ingrese la calle:  ");
     fflush(stdin);

@@ -19,7 +19,11 @@ void modificarInformacionPersonal(const char *filename, stUsuario *usuarioLoguea
 void desloguearse(stUsuario *usuarioLogueado);
 void darDeBajaUsuario(const char *filename);
 void eliminarLibroDefinitivamente(stLibro libros[], int *cantidad, int idLibro, const char *librosFilename);
-void mostrarLibrosConCometarios (stLibro libros[], int cantidadLib, stComentario comentario[], int cantidadCom);
+void mostrarLibrosConComentarios(stLibro libros[], int cantidadLib, stComentario comentarios[], int cantidadCom);
+void eliminarComentario(stComentario comentarios[], int *cantidad, int idComentario, const char *comentarioFilename);
+void modificarcomentario(stComentario comentario[], int *cantidad, int idComentario, const char *comentarioFilename);
+void calcularPromedioPuntajes(stComentario comentario[], int cantidadComentario, stLibro libros[], int cantidadLibros);
+
 
 int main() {
     int option;
@@ -33,6 +37,8 @@ int main() {
     // Cargar los libros desde el archivo
     cantidadLibros = cargarLibros(LIBROS_FILE, libros, MAX_LIBROS);
     cantidadComentario = cargarComentario(COMENTARIO_FILE, comentario, MAX_COMENTARIO);
+
+    // Calcular el promedio de puntajes de comentarios para los libros cargados
 
 
     do {
@@ -54,25 +60,26 @@ int main() {
                     printf("\nInicio de sesion exitoso.\n");
                     int opcion;
                 do {
-                        printf("\n***********************************************");
+                        printf("\n**************************************************");
                         printf("\n");
                         printf("\n1- Agregar Libro.");
                         printf("\n2- Mostrar Libros.");
                         printf("\n3- Mostrar Libros por Categoria.");
                         printf("\n4- Mostrar Libros por Autor.");
                         printf("\n5- Buscar Libros por Titulo.");
-                        printf("\n6- Modificar Informacion Personal.");
-                        printf("\n7- Desloguearse.");
+                        printf("\n6- Agregar libro a favoritos");
+                        printf("\n7- Eliminar libro de favoritos");
+                        printf("\n8- Modificar Informacion Personal.");
                         if (usuarioLogueado.esAdmin) {
-                            printf("\n8- Ver Todos los Usuarios.");
-                            printf("\n9- Dar de Baja Usuario.");
-                            printf("\n10- Dar de Baja Libro.");
-                            printf("\n11- Eliminar Libro Definitivamente.");
+                            printf("\n9- Ver Todos los Usuarios.");
+                            printf("\n10- Dar de Baja Usuario.");
+                            printf("\n11- Eliminar Libro.");
                         }
                         printf("\n0- Salir");
                         printf("\n");
-                        printf("\n***********************************************");
+                        printf("\n*****************************************************");
                         printf("\nIngrese una opcion: ");
+                        printf("\n");
                         fflush(stdin);
                         scanf("%d", &opcion);
                         getchar(); // para consumir el salto de línea después de scanf
@@ -85,16 +92,20 @@ int main() {
                                 break;
                             }
                             case 2:
-                                mostrarLibrosConCometarios(libros, cantidadLibros, comentario, cantidadComentario);
+                                calcularPromedioPuntajes(comentario, cantidadComentario, libros, cantidadLibros);
+                                mostrarLibrosConComentarios(libros, cantidadLibros, comentario, cantidadComentario);
                                 int elegir;
                                 do{
                                         printf("\n***********************************************");
                                         printf("\n");
                                         printf("\n1- Comentar libro");
+                                        printf("\n2- Modificar comentario");
+                                        printf("\n3- Eliminar comentario");
                                         printf("\n0- Salir");
                                         printf("\n");
                                         printf("\n***********************************************");
                                         printf("\nIngrese una opcion: ");
+                                        printf("\n");
                                         fflush(stdin);
                                         scanf("%d", &elegir);
                                         getchar();
@@ -106,11 +117,25 @@ int main() {
                                             guardarComentario(COMENTARIO_FILE, comentario, cantidadComentario);
                                             guardarLibros(LIBROS_FILE, libros, cantidadLibros);
                                             break;
+                                        case 2:;
+                                            int idComentario;
+                                            printf("Ingrese el ID del comentario a modificar: ");
+                                            scanf("%d", &idComentario);
+                                            modificarcomentario(comentario, cantidadComentario, idComentario, COMENTARIO_FILE);
+                                            break;
+                                        case 3:;
+                                            int idComentari;
+                                            printf("Ingrese el ID del comentario a eliminar: ");
+                                            scanf("%d", &idComentari);
+                                            eliminarcomentario(comentario, &cantidadComentario, idComentari, COMENTARIO_FILE);
+                                            guardarComentario(COMENTARIO_FILE, comentario, cantidadComentario);
+                                            break;
                                     }
                                 }while (elegir != 0);
                                 break;
                             case 3: {
                                 char categoria[50];
+                                printf("\nBuscar respetando mayusculas y minusculas del titulo.\n");
                                 printf("Ingrese la categoria: ");
                                 fgets(categoria, 50, stdin);
                                 categoria[strcspn(categoria, "\n")] = '\0';
@@ -119,6 +144,7 @@ int main() {
                             }
                             case 4: {
                                 char autor[50];
+                                printf("\nBuscar respetando mayusculas y minusculas del titulo.\n");
                                 printf("Ingrese el autor: ");
                                 fgets(autor, 50, stdin);
                                 autor[strcspn(autor, "\n")] = '\0';
@@ -134,29 +160,26 @@ int main() {
                                 buscarLibrosPorTitulo(libros, cantidadLibros, titulo);
                                 break;
                             }
-                            case 6:
-                                modificarInformacionPersonal("usuarios.dat", &usuarioLogueado);
+                            case 6:;
+
                                 break;
                             case 7:
+
+                                break;
+                            case 8:
+                                modificarInformacionPersonal("usuarios.dat", &usuarioLogueado);
+                                break;
+                            case 9:
                                 if (usuarioLogueado.esAdmin) {
                                     mostrarTodosUsuarios("usuarios.dat");
                                 }
                                 break;
-                            case 8:
+                            case 10:
                                 if (usuarioLogueado.esAdmin) {
                                     darDeBajaUsuario("usuarios.dat");
                                 }
                                 break;
-                            case 9:
-                                if (usuarioLogueado.esAdmin) {
-                                    int idLibro;
-                                    printf("Ingrese el ID del libro a dar de baja: ");
-                                    scanf("%d", &idLibro);
-                                    eliminarLibro(libros, &cantidadLibros, idLibro);
-                                    guardarLibros(LIBROS_FILE, libros, cantidadLibros); // Usar LIBROS_FILE
-                                }
-                                break;
-                            case 10:
+                            case 11:
                                 if (usuarioLogueado.esAdmin) {
                                     int idLibro;
                                     printf("Ingrese el ID del libro a eliminar definitivamente: ");
@@ -331,13 +354,83 @@ void eliminarLibroDefinitivamente(stLibro libros[], int *cantidad, int idLibro, 
     guardarLibros(librosFilename, libros, *cantidad); // Actualizar el archivo después de la eliminación
 }
 
-void mostrarLibrosConCometarios (stLibro libros[], int cantidadLib, stComentario comentario[], int cantidadCom){
-
+void mostrarLibrosConComentarios(stLibro libros[], int cantidadLib, stComentario comentarios[], int cantidadCom) {
     for (int i = 0; i < cantidadLib; i++) {
         mostrarLibro(libros[i]);
-        for ( int j =0; j < cantidadCom; j++){
-            mostrarComentario(comentario[j]);
+        for (int j = 0; j < cantidadCom; j++) {
+            if (comentarios[j].idLibro == libros[i].idLibro) {
+                mostrarComentario(comentarios[j]);
+            }
+        }
+    }
+}
+
+void modificarcomentario(stComentario comentario[], int *cantidad, int idComentario, const char *comentarioFilename) {
+    // Buscar el comentario con el ID proporcionado
+    int encontrado = 0;
+    for (int i = 0; i < cantidad; i++) {
+        if (comentario[i].idComentario == idComentario) {
+            encontrado = 1;
+
+            // Mostrar el comentario actual
+            printf("Comentario actual: %s\n", comentario[i].descripcion);
+
+            // Solicitar al usuario que ingrese el nuevo comentario
+            printf("Edite el comentario: ");
+            fflush(stdin);
+            fgets(comentario[i].descripcion, sizeof(comentario[i].descripcion), stdin);
+
+            // Eliminar el salto de línea final generado por fgets, si existe
+            comentario[i].descripcion[strcspn(comentario[i].descripcion, "\n")] = '\0';
+
+            // Mostrar mensaje de éxito
+            printf("Comentario modificado correctamente.\n");
+
+
+            guardarComentario(comentarioFilename, comentario, cantidad);
+
+            break;
         }
     }
 
+    if (!encontrado) {
+        printf("Comentario con ID %d no encontrado.\n", idComentario);
+    }
+}
+
+void eliminarcomentario(stComentario comentario[], int *cantidad, int idComentario, const char *comentarioFilename) {
+    // Implementación de la función eliminarcomentario
+    for (int i = 0; i < *cantidad; i++) {
+        if (comentario[i].idComentario == idComentario) {
+            for (int j = i; j < *cantidad - 1; j++) {
+                comentario[j] = comentario[j + 1];
+            }
+            (*cantidad)--;
+            break;
+        }
+    }
+    // Código para guardar los comentarios actualizados en el archivo, si es necesario
+}
+
+void calcularPromedioPuntajes(stComentario comentario[], int cantidadComentario, stLibro libros[], int cantidadLibros) {
+    // Iterar sobre todos los libros
+    for (int i = 0; i < cantidadLibros; i++) {
+        if (cantidadComentario > 0) {
+            float sumaPuntajes = 0.0;
+            int contador = 0;
+
+            // Iterar sobre todos los comentarios
+            for (int j = 0; j < cantidadComentario; j++) {
+                if (comentario[j].idLibro == libros[i].idLibro && comentario[j].puntaje > 0) {
+                    sumaPuntajes += comentario[j].puntaje;
+                    contador++;
+                }
+            }
+
+            // Calcular el promedio si hay comentarios evaluados
+            if (contador > 0) {
+                libros[i].valoracion = sumaPuntajes / contador;
+            }
+        }
+    }
 }

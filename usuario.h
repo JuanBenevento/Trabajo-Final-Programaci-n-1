@@ -7,6 +7,8 @@
 #include <conio.h>
 #include "domicilio.h"
 
+#define MAX_FAVORITOS 50
+
 typedef struct {
     int idUsuario;
     char email[100];
@@ -15,7 +17,7 @@ typedef struct {
     int esAdmin; // 1 = si  0 = no
     char genero;
     char fechaNacimiento[20]; // o se puede hacer con dia, mes, anio
-    int librosFavoritos[50]; // se van a guardar los id de los libros favs
+    int librosFavoritos[MAX_FAVORITOS]; //
     char dni[10];
     stDomicilio domicilio;
     int eliminado; // 0 si está activo - 1 si está eliminado
@@ -29,7 +31,7 @@ void eliminarUsuario(stUsuario* usuario);
 void mostrarTodosUsuarios(const char *filename);
 int validarEmail(const char *email);
 int validarPassword(const char *password);
-int emailRegistrado(const char *filename, const char *email);                                           //administrador
+int emailRegistrado(const char *filename, const char *email);
 
 
 

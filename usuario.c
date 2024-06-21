@@ -1,4 +1,3 @@
-#include "usuario.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -96,25 +95,8 @@ void mostrarUnUsuario(stUsuario usuario) {
     }
 }
 
-// Funcion para agregar un libro favorito a un usuario
-void agregarLibroFavorito(stUsuario* usuario, int idLibro) {
-    for (int i = 0; i < 50; i++) {
-        if (usuario->librosFavoritos[i] == -1) {
-            usuario->librosFavoritos[i] = idLibro;
-            break;
-        }
-    }
-}
 
-// Funcion para eliminar un libro favorito de un usuario
-void eliminarLibroFavorito(stUsuario* usuario, int idLibro) {
-    for (int i = 0; i < 50; i++) {
-        if (usuario->librosFavoritos[i] == idLibro) {
-            usuario->librosFavoritos[i] = -1;
-            break;
-        }
-    }
-}
+
 
 // Funcion para marcar un usuario como eliminado
 void eliminarUsuario(stUsuario* usuario) {

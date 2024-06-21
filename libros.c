@@ -40,12 +40,14 @@ stLibro agregarLibro() {
 
 void mostrarLibro(stLibro libro) {
     if (libro.eliminado == 0) {
+        printf("\n...........................................\n");
         printf("ID: %d\n", libro.idLibro);
         printf("Titulo: %s\n", libro.titulo);
         printf("Editorial: %s\n", libro.editorial);
         printf("Autor: %s\n", libro.autor);
         printf("Categoria: %s\n", libro.categoria);
         printf("Valoracion: %.2f\n", libro.valoracion);
+        printf("\n...........................................\n");
     }
 }
 

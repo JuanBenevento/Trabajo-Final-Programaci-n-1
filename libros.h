@@ -6,6 +6,7 @@
 #include <string.h>
 #include <conio.h>
 
+#include "comentarios.h"
 
  typedef struct {
     int idLibro; /// único, autoincremental

@@ -16,13 +16,22 @@ stComentario agregarComentario() {
     scanf("%d", &nuevoComentario.idLibro);
     getchar(); // Limpiar el buffer del teclado
 
+    /*
     printf("Ingrese el ID del usuario: ");
     scanf("%d", &nuevoComentario.idUsuario);
     getchar(); // Limpiar el buffer del teclado
+    */
+
+    printf("Ingrese el nombre del usuario: ");
+    scanf("%s", &nuevoComentario.nombreUsuario);
+    getchar();
 
     printf("Ingrese la descripcion del comentario: ");
-    fgets(nuevoComentario.descripcion, 500, stdin);
-    nuevoComentario.descripcion[strcspn(nuevoComentario.descripcion, "\n")] = '\0'; // Eliminar el salto de línea
+    fgets(nuevoComentario.descripcion, sizeof(nuevoComentario.descripcion), stdin);
+    // Eliminar el salto de línea al final de la cadena, si fue capturado por fgets
+    if (nuevoComentario.descripcion[strlen(nuevoComentario.descripcion) - 1] == '\n') {
+        nuevoComentario.descripcion[strlen(nuevoComentario.descripcion) - 1] = '\0';
+    }
 
     do {
         printf("Ingrese la valoracion del libro (0-5): ");
@@ -42,16 +51,17 @@ stComentario agregarComentario() {
 
 // Función para mostrar la información de un comentario
 void mostrarComentario(stComentario comentario) {
-    if (comentario.eliminado == 0) {
+
+        printf("\n------------------------------------------------\n");
         printf("\nID Comentario: %d\n", comentario.idComentario);
         printf("ID Libro: %d\n", comentario.idLibro);
-        printf("ID Usuario: %d\n", comentario.idUsuario);
+        //printf("ID Usuario: %d\n", comentario.idUsuario);
+        printf("Nombre de usuario: %s\n", comentario.nombreUsuario);
         printf("Descripcion: %s\n", comentario.descripcion);
         printf("Valoracion: %d\n", comentario.puntaje);
         printf("Fecha Comentario: %s\n", comentario.fechaComentario);
-    } else {
-        printf("El comentario con ID %d esta eliminado.\n", comentario.idComentario);
-    }
+        printf("\n-------------------------------------------------\n");
+
 }
 
 void mostrarComentarios(stComentario comentario[], int cantidad) {
@@ -62,7 +72,7 @@ void mostrarComentarios(stComentario comentario[], int cantidad) {
 
 int cargarComentario(const char *filename, stComentario comentario[], int maxComentario) {
     int cantidad = 0;
-    FILE *file = fopen(filename, "rb");
+    FILE *file = fopen(filename, "r+b");
     if (file != NULL) {
         while (fread(&comentario[cantidad], sizeof(stComentario), 1, file) > 0 && cantidad < maxComentario) {
             if (comentario[cantidad].idComentario > idComentarioCounter) {
@@ -90,7 +100,3 @@ void agregarComentarioLista(stComentario comentario[], int *cantidad, stComentar
     (*cantidad)++;
 }
 
-// Función para marcar un comentario como eliminado
-void eliminarComentario(stComentario *comentario) {
-    comentario->eliminado = 1;
-}
