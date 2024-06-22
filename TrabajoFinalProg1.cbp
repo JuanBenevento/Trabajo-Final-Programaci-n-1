@@ -39,6 +39,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="domicilio.h" />
+		<Unit filename="favoritos.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="favoritos.h" />
 		<Unit filename="libros.c">
 			<Option compilerVar="CC" />
 		</Unit>

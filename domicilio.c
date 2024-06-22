@@ -40,8 +40,7 @@ stDomicilio cargaUnDomicilio(){
 
 void mostrarUnDomicilio(stDomicilio domicilio){
 
-    printf("\n**********************************************");
-    printf("\n");
+
     printf("\nCalle:..................%s", domicilio.calle);
     printf("\nAltura:.................%d", domicilio.altura);
     printf("\nCodigo Postal:..........%d", domicilio.cp);

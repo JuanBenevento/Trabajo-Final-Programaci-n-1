@@ -57,7 +57,7 @@
 	<string.h>
 	<conio.h>
 
-1718866422 source:c:\users\juanm\onedrive\escritorio\primer cuatrimestre\programacion\tp final\trabajofinalprog1\comentarios.c
+1719032655 source:c:\users\juanm\onedrive\escritorio\primer cuatrimestre\programacion\tp final\trabajofinalprog1\comentarios.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -70,7 +70,7 @@
 	<conio.h>
 	"libros.h"
 
-1718864274 source:c:\users\juanm\onedrive\escritorio\primer cuatrimestre\programacion\tp final\trabajofinalprog1\domicilio.c
+1719031225 source:c:\users\juanm\onedrive\escritorio\primer cuatrimestre\programacion\tp final\trabajofinalprog1\domicilio.c
 	"domicilio.h"
 
 1717123660 c:\users\juanm\onedrive\escritorio\primer cuatrimestre\programacion\tp final\trabajofinalprog1\domicilio.h
@@ -79,7 +79,7 @@
 	<string.h>
 	<conio.h>
 
-1718865341 source:c:\users\juanm\onedrive\escritorio\primer cuatrimestre\programacion\tp final\trabajofinalprog1\libros.c
+1719037873 source:c:\users\juanm\onedrive\escritorio\primer cuatrimestre\programacion\tp final\trabajofinalprog1\libros.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -92,7 +92,7 @@
 	<conio.h>
 	"comentarios.h"
 
-1718866780 source:c:\users\juanm\onedrive\escritorio\primer cuatrimestre\programacion\tp final\trabajofinalprog1\main.c
+1719037509 source:c:\users\juanm\onedrive\escritorio\primer cuatrimestre\programacion\tp final\trabajofinalprog1\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -115,4 +115,6 @@
 	<string.h>
 	<ctype.h>
 	"usuario.h"
+
+1719036918 source:c:\users\juanm\onedrive\escritorio\primer cuatrimestre\programacion\tp final\trabajofinalprog1\favoritos.c
 

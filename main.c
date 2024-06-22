@@ -12,6 +12,14 @@
 #define LIBROS_FILE "libros.dat" // Definicion de LIBROS_FILE
 #define MAX_COMENTARIO 200
 #define COMENTARIO_FILE "comentario.dat"
+#define MAX_FAVORITOS 200
+#define FAVORITOS_FILE "favoritos.dat"
+
+typedef struct {
+    int idUsuario;
+    int idLibro;
+} stFavorito;
+
 
 void registrarUsuario(const char *filename, int *idUsuario);
 int iniciarSesion(const char *filename, stUsuario *usuarioLogueado);
@@ -20,9 +28,14 @@ void desloguearse(stUsuario *usuarioLogueado);
 void darDeBajaUsuario(const char *filename);
 void eliminarLibroDefinitivamente(stLibro libros[], int *cantidad, int idLibro, const char *librosFilename);
 void mostrarLibrosConComentarios(stLibro libros[], int cantidadLib, stComentario comentarios[], int cantidadCom);
-void eliminarComentario(stComentario comentarios[], int *cantidad, int idComentario, const char *comentarioFilename);
+void eliminarcomentario(stComentario comentario[], int *cantidad, int idComentario, const char *comentarioFilename, int idUsuario);
 void modificarcomentario(stComentario comentario[], int *cantidad, int idComentario, const char *comentarioFilename);
 void calcularPromedioPuntajes(stComentario comentario[], int cantidadComentario, stLibro libros[], int cantidadLibros);
+void mostrarLibrosFavoritos(const stFavorito favoritos[], int cantidadFavoritos, const stLibro libros[], int cantidadLibros, int idUsuario);
+void agregarLibroAFavoritos(stFavorito favoritos[], int *cantidadFavoritos, int idUsuario, stLibro libro);
+void eliminarLibroDeFavoritos(stFavorito favoritos[], int *cantidadFavoritos, int idUsuario, int idLibro);
+void guardarFavoritos(const char *filename, stFavorito favoritos[], int cantidadFavoritos);
+int cargarFavoritos(const char *filename, stFavorito favoritos[], int maxFavoritos);
 
 
 int main() {
@@ -31,13 +44,15 @@ int main() {
     stUsuario usuarioLogueado;
     stLibro libros[MAX_LIBROS];
     stComentario comentario[MAX_COMENTARIO];
+    stFavorito favoritos[MAX_FAVORITOS];
     int cantidadComentario = 0;
     int cantidadLibros = 0;
+    int cantidadFavoritos = 0;
 
     // Cargar los libros desde el archivo
     cantidadLibros = cargarLibros(LIBROS_FILE, libros, MAX_LIBROS);
     cantidadComentario = cargarComentario(COMENTARIO_FILE, comentario, MAX_COMENTARIO);
-
+    cantidadFavoritos = cargarFavoritos(FAVORITOS_FILE, favoritos, MAX_FAVORITOS);
     // Calcular el promedio de puntajes de comentarios para los libros cargados
 
 
@@ -69,15 +84,16 @@ int main() {
                         printf("\n5- Buscar Libros por Titulo.");
                         printf("\n6- Agregar libro a favoritos");
                         printf("\n7- Eliminar libro de favoritos");
-                        printf("\n8- Modificar Informacion Personal.");
+                        printf("\n8- Mostrar lista de favoritos");
+                        printf("\n9- Modificar Informacion Personal.");
                         if (usuarioLogueado.esAdmin) {
-                            printf("\n9- Ver Todos los Usuarios.");
-                            printf("\n10- Dar de Baja Usuario.");
-                            printf("\n11- Eliminar Libro.");
+                            printf("\n10- Ver Todos los Usuarios.");
+                            printf("\n11- Dar de Baja Usuario.");
+                            printf("\n12- Eliminar Libro.");
                         }
                         printf("\n0- Salir");
                         printf("\n");
-                        printf("\n*****************************************************");
+                        printf("\n***************************************************");
                         printf("\nIngrese una opcion: ");
                         printf("\n");
                         fflush(stdin);
@@ -125,10 +141,14 @@ int main() {
                                             break;
                                         case 3:;
                                             int idComentari;
+                                            int idUsuari;
                                             printf("Ingrese el ID del comentario a eliminar: ");
                                             scanf("%d", &idComentari);
-                                            eliminarcomentario(comentario, &cantidadComentario, idComentari, COMENTARIO_FILE);
-                                            guardarComentario(COMENTARIO_FILE, comentario, cantidadComentario);
+                                            printf("Ingrese el ID del usuario: ");
+                                            scanf("%d", &idUsuari);
+                                            eliminarcomentario(comentario, &cantidadComentario, idComentari, COMENTARIO_FILE, idUsuari);
+                                            //guardarComentario(COMENTARIO_FILE, comentario, cantidadComentario);
+
                                             break;
                                     }
                                 }while (elegir != 0);
@@ -160,26 +180,46 @@ int main() {
                                 buscarLibrosPorTitulo(libros, cantidadLibros, titulo);
                                 break;
                             }
-                            case 6:;
-
+                            case 6: {
+                                int idLibro;
+                                printf("Ingrese el ID del libro a agregar a favoritos: ");
+                                scanf("%d", &idLibro);
+                                stLibro libro;
+                                for (int i = 0; i < cantidadLibros; i++) {
+                                    if (libros[i].idLibro == idLibro) {
+                                        libro = libros[i];
+                                        break;
+                                    }
+                                }
+                                agregarLibroAFavoritos(favoritos, &cantidadFavoritos, usuarioLogueado.idUsuario, libro);
+                                guardarFavoritos(FAVORITOS_FILE, favoritos, cantidadFavoritos);
                                 break;
-                            case 7:
-
+                            }
+                            case 7: {
+                                int idLibro;
+                                printf("Ingrese el ID del libro a eliminar de favoritos: ");
+                                scanf("%d", &idLibro);
+                                eliminarLibroDeFavoritos(favoritos, &cantidadFavoritos, usuarioLogueado.idUsuario, idLibro);
+                                guardarFavoritos(FAVORITOS_FILE, favoritos, cantidadFavoritos);
                                 break;
+                            }
                             case 8:
-                                modificarInformacionPersonal("usuarios.dat", &usuarioLogueado);
+                                mostrarLibrosFavoritos(favoritos, cantidadFavoritos, libros, cantidadLibros, usuarioLogueado.idUsuario);
                                 break;
                             case 9:
+                                modificarInformacionPersonal("usuarios.dat", &usuarioLogueado);
+                                break;
+                            case 10:
                                 if (usuarioLogueado.esAdmin) {
                                     mostrarTodosUsuarios("usuarios.dat");
                                 }
                                 break;
-                            case 10:
+                            case 11:
                                 if (usuarioLogueado.esAdmin) {
                                     darDeBajaUsuario("usuarios.dat");
                                 }
                                 break;
-                            case 11:
+                            case 12:
                                 if (usuarioLogueado.esAdmin) {
                                     int idLibro;
                                     printf("Ingrese el ID del libro a eliminar definitivamente: ");
@@ -228,7 +268,7 @@ void registrarUsuario(const char *filename, int *idUsuario) {
         printf("\nError al abrir el archivo.\n");
     }
 
-    // Mostrar el usuario registrado
+    // Mostrar el usuario registradou
     mostrarUnUsuario(usuario);
 }
 
@@ -372,14 +412,14 @@ void modificarcomentario(stComentario comentario[], int *cantidad, int idComenta
         if (comentario[i].idComentario == idComentario) {
             encontrado = 1;
 
-            // Mostrar el comentario actual
-            printf("Comentario actual: %s\n", comentario[i].descripcion);
-
             // Solicitar al usuario que ingrese el nuevo comentario
             printf("Edite el comentario: ");
             fflush(stdin);
             fgets(comentario[i].descripcion, sizeof(comentario[i].descripcion), stdin);
 
+            printf("Edite la valoracion del libro (0-5): ");
+            fflush(stdin);
+            fgets(comentario[i].puntaje, sizeof(comentario[i].puntaje), stdin);
             // Eliminar el salto de línea final generado por fgets, si existe
             comentario[i].descripcion[strcspn(comentario[i].descripcion, "\n")] = '\0';
 
@@ -398,19 +438,22 @@ void modificarcomentario(stComentario comentario[], int *cantidad, int idComenta
     }
 }
 
-void eliminarcomentario(stComentario comentario[], int *cantidad, int idComentario, const char *comentarioFilename) {
+void eliminarcomentario(stComentario comentario[], int *cantidad, int idComentario, const char *comentarioFilename, int idUsuario) {
     // Implementación de la función eliminarcomentario
     for (int i = 0; i < *cantidad; i++) {
-        if (comentario[i].idComentario == idComentario) {
+        if (comentario[i].idComentario == idComentario && comentario[i].idUsuario == idUsuario) {
             for (int j = i; j < *cantidad - 1; j++) {
                 comentario[j] = comentario[j + 1];
+            }
+            } else {
+                printf("No es posible eliminar el comentario");
             }
             (*cantidad)--;
             break;
         }
     }
     // Código para guardar los comentarios actualizados en el archivo, si es necesario
-}
+
 
 void calcularPromedioPuntajes(stComentario comentario[], int cantidadComentario, stLibro libros[], int cantidadLibros) {
     // Iterar sobre todos los libros
@@ -433,4 +476,58 @@ void calcularPromedioPuntajes(stComentario comentario[], int cantidadComentario,
             }
         }
     }
+}
+
+void mostrarLibrosFavoritos(const stFavorito favoritos[], int cantidadFavoritos, const stLibro libros[], int cantidadLibros, int idUsuario) {
+    printf("Lista de libros favoritos:\n");
+    for (int i = 0; i < cantidadFavoritos; i++) {
+        if (favoritos[i].idUsuario == idUsuario) {
+            for (int j = 0; j < cantidadLibros; j++) {
+                if (libros[j].idLibro == favoritos[i].idLibro) {
+                    mostrarLibro(libros[j]);
+                    break;
+                }
+            }
+        }
+    }
+}
+
+void agregarLibroAFavoritos(stFavorito favoritos[], int *cantidadFavoritos, int idUsuario, stLibro libro) {
+    favoritos[*cantidadFavoritos].idUsuario = idUsuario;
+    favoritos[*cantidadFavoritos].idLibro = libro.idLibro;
+    (*cantidadFavoritos)++;
+}
+
+void eliminarLibroDeFavoritos(stFavorito favoritos[], int *cantidadFavoritos, int idUsuario, int idLibro) {
+    for (int i = 0; i < *cantidadFavoritos; i++) {
+        if (favoritos[i].idUsuario == idUsuario && favoritos[i].idLibro == idLibro) {
+            for (int j = i; j < *cantidadFavoritos - 1; j++) {
+                favoritos[j] = favoritos[j + 1];
+            }
+            (*cantidadFavoritos)--;
+            break;
+        }
+    }
+}
+
+void guardarFavoritos(const char *filename, stFavorito favoritos[], int cantidadFavoritos) {
+    FILE *file = fopen(filename, "wb");
+    if (file != NULL) {
+        fwrite(favoritos, sizeof(stFavorito), cantidadFavoritos, file);
+        fclose(file);
+    } else {
+        printf("Error al abrir el archivo de favoritos.\n");
+    }
+}
+
+int cargarFavoritos(const char *filename, stFavorito favoritos[], int maxFavoritos) {
+    int cantidad = 0;
+    FILE *file = fopen(filename, "rb");
+    if (file != NULL) {
+        while (fread(&favoritos[cantidad], sizeof(stFavorito), 1, file) > 0 && cantidad < maxFavoritos) {
+            cantidad++;
+        }
+        fclose(file);
+    }
+    return cantidad;
 }

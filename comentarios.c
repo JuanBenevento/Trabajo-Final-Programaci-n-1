@@ -52,15 +52,15 @@ stComentario agregarComentario() {
 // Función para mostrar la información de un comentario
 void mostrarComentario(stComentario comentario) {
 
-        printf("\n------------------------------------------------\n");
+        printf("\n.................................................\n");
         printf("\nID Comentario: %d\n", comentario.idComentario);
         printf("ID Libro: %d\n", comentario.idLibro);
-        //printf("ID Usuario: %d\n", comentario.idUsuario);
+        printf("ID Usuario: %d\n", comentario.idUsuario);
         printf("Nombre de usuario: %s\n", comentario.nombreUsuario);
         printf("Descripcion: %s\n", comentario.descripcion);
         printf("Valoracion: %d\n", comentario.puntaje);
         printf("Fecha Comentario: %s\n", comentario.fechaComentario);
-        printf("\n-------------------------------------------------\n");
+        printf("\n.................................................\n");
 
 }
 
