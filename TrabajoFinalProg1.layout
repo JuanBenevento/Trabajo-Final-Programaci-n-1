@@ -2,50 +2,50 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="libros.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="libros.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="833" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="main.c" open="1" top="1" tabpos="9" split="2" active="1" splitpos="864" zoom_1="0" zoom_2="0">
+	<File name="comentarios.h" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2283" topLine="6" />
-			<Cursor2 position="2130" topLine="0" />
+			<Cursor1 position="1085" topLine="3" />
 		</Cursor>
 	</File>
-	<File name="domicilio.h" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="usuario.c" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2863" topLine="78" />
+		</Cursor>
+	</File>
+	<File name="usuario.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="276" topLine="8" />
+		</Cursor>
+	</File>
+	<File name="domicilio.h" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="62" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="comentarios.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="domicilio.c" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1085" topLine="0" />
+			<Cursor1 position="1268" topLine="15" />
 		</Cursor>
 	</File>
-	<File name="usuario.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="comentarios.c" open="1" top="1" tabpos="6" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="276" topLine="3" />
+			<Cursor1 position="2616" topLine="45" />
 		</Cursor>
 	</File>
-	<File name="usuario.c" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3457" topLine="102" />
-		</Cursor>
-	</File>
-	<File name="libros.c" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="libros.c" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="1707" topLine="83" />
 		</Cursor>
 	</File>
-	<File name="comentarios.c" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
+	<File name="main.c" open="1" top="0" tabpos="1" split="2" active="1" splitpos="864" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1987" topLine="86" />
-		</Cursor>
-	</File>
-	<File name="domicilio.c" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1268" topLine="15" />
+			<Cursor1 position="2283" topLine="468" />
+			<Cursor2 position="2130" topLine="0" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

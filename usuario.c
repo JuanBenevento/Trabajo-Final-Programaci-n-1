@@ -93,7 +93,15 @@ void mostrarUnUsuario(stUsuario usuario) {
     }
 }
 
-
+int validarPassword(const char *password) {  //A esta funcion le podemos agregar un minimo de caracteres tambien
+    int tieneMayuscula = 0;
+    int tieneMinuscula = 0;
+    for (int i = 0; password[i] != '\0'; i++) {
+        if (isupper(password[i])) tieneMayuscula = 1;
+        if (islower(password[i])) tieneMinuscula = 1;
+    }
+    return tieneMayuscula && tieneMinuscula;
+}
 
 
 // Funcion para marcar un usuario como eliminado

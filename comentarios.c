@@ -33,7 +33,7 @@ stComentario agregarComentario() {
 
     printf("Ingrese la descripcion del comentario: ");
     fgets(nuevoComentario.descripcion, sizeof(nuevoComentario.descripcion), stdin);
-    // Eliminar el salto de línea al final de la cadena, si fue capturado por fgets
+
     if (nuevoComentario.descripcion[strlen(nuevoComentario.descripcion) - 1] == '\n') {
         nuevoComentario.descripcion[strlen(nuevoComentario.descripcion) - 1] = '\0';
     }
@@ -54,7 +54,7 @@ stComentario agregarComentario() {
     return nuevoComentario;
 }
 
-int validarPassword(const char *password) {  //A esta funcion le podemos agregar un minimo de caracteres tambien
+/*int validarPassword(const char *password) {  //A esta funcion le podemos agregar un minimo de caracteres tambien
     int tieneMayuscula = 0;
     int tieneMinuscula = 0;
     for (int i = 0; password[i] != '\0'; i++) {
@@ -63,7 +63,7 @@ int validarPassword(const char *password) {  //A esta funcion le podemos agregar
     }
     return tieneMayuscula && tieneMinuscula;
 }
-
+*/
 // Función para mostrar la información de un comentario
 
 void mostrarComentario(stComentario comentario) {
@@ -71,7 +71,7 @@ void mostrarComentario(stComentario comentario) {
         printf("\n.................................................\n");
         printf("\nID Comentario: %d\n", comentario.idComentario);
         printf("ID Libro: %d\n", comentario.idLibro);
-        printf("contrasenia: %s\n", comentario.password);
+        //printf("contrasenia: %s\n", comentario.password);
         printf("Nombre de usuario: %s\n", comentario.nombreUsuario);
         printf("Descripcion: %s\n", comentario.descripcion);
         printf("Valoracion: %d\n", comentario.puntaje);
