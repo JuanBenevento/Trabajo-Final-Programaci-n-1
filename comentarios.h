@@ -12,7 +12,7 @@
 typedef struct {
     int idComentario;  // único, autoincremental
     int idLibro;
-    int idUsuario;
+    char password[20];
     char nombreUsuario [50];
     char tituloComentario[100];
     char descripcion[MAX_DESCRIPCION];

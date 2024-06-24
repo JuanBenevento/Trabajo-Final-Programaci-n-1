@@ -16,15 +16,20 @@ stComentario agregarComentario() {
     scanf("%d", &nuevoComentario.idLibro);
     getchar(); // Limpiar el buffer del teclado
 
-    /*
-    printf("Ingrese el ID del usuario: ");
-    scanf("%d", &nuevoComentario.idUsuario);
-    getchar(); // Limpiar el buffer del teclado
-    */
+
+    do {
+        printf("\nIngrese su contrasenia: ");
+        fflush(stdin);
+        gets(nuevoComentario.password);
+        if (!validarPassword(nuevoComentario.password)){
+            printf("Contrasenia no valida.");
+        }
+    } while (!validarPassword(nuevoComentario.password)); // Limpiar el buffer del teclado
+
 
     printf("Ingrese el nombre del usuario: ");
     scanf("%s", &nuevoComentario.nombreUsuario);
-    getchar();
+
 
     printf("Ingrese la descripcion del comentario: ");
     fgets(nuevoComentario.descripcion, sizeof(nuevoComentario.descripcion), stdin);
@@ -49,13 +54,24 @@ stComentario agregarComentario() {
     return nuevoComentario;
 }
 
+int validarPassword(const char *password) {  //A esta funcion le podemos agregar un minimo de caracteres tambien
+    int tieneMayuscula = 0;
+    int tieneMinuscula = 0;
+    for (int i = 0; password[i] != '\0'; i++) {
+        if (isupper(password[i])) tieneMayuscula = 1;
+        if (islower(password[i])) tieneMinuscula = 1;
+    }
+    return tieneMayuscula && tieneMinuscula;
+}
+
 // Función para mostrar la información de un comentario
+
 void mostrarComentario(stComentario comentario) {
 
         printf("\n.................................................\n");
         printf("\nID Comentario: %d\n", comentario.idComentario);
         printf("ID Libro: %d\n", comentario.idLibro);
-        printf("ID Usuario: %d\n", comentario.idUsuario);
+        printf("contrasenia: %s\n", comentario.password);
         printf("Nombre de usuario: %s\n", comentario.nombreUsuario);
         printf("Descripcion: %s\n", comentario.descripcion);
         printf("Valoracion: %d\n", comentario.puntaje);

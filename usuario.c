@@ -8,11 +8,8 @@
 // Funcion para cargar un usuario
 stUsuario cargarUnUsuario(int idUsuario) {
     stUsuario usuario;
-    usuario.idUsuario = idUsuario;
 
     char aux[100];
-    printf("\n***********************************************");
-    printf("\n");
 
     do {
         printf("\nIngrese su email: ");
@@ -52,8 +49,7 @@ stUsuario cargarUnUsuario(int idUsuario) {
 
     printf("\nIngrese si es administrador (1 = Si, 0 = No): ");
     scanf("%d", &usuario.esAdmin);
-    printf("\n");
-    printf("\n***********************************************");
+
 
     usuario.eliminado = 0;
 
@@ -61,6 +57,8 @@ stUsuario cargarUnUsuario(int idUsuario) {
     for (int i = 0; i < 50; i++) {
         usuario.librosFavoritos[i] = -1;
     }
+
+    usuario.idUsuario = idUsuario; // Asignar el ID del usuario
 
     return usuario;
 }
@@ -76,7 +74,7 @@ void mostrarUnUsuario(stUsuario usuario) {
         printf("\nFecha de Nacimiento:...........%s", usuario.fechaNacimiento);
         printf("\nDNI:...........................%s", usuario.dni);
         mostrarUnDomicilio(usuario.domicilio);
-        printf("\nAdministrador:.................%s", usuario.esAdmin ? "Sí" : "No");
+        printf("\nAdministrador:.................%s", usuario.esAdmin ? "Si" : "No");
         printf("\nLibros Favoritos:..............");
 
         int i;
@@ -120,15 +118,6 @@ int validarEmail(const char *email) {
     return strstr(email, "@") && strstr(email, ".com");
 }
 
-int validarPassword(const char *password) {  //A esta funcion le podemos agregar un minimo de caracteres tambien
-    int tieneMayuscula = 0;
-    int tieneMinuscula = 0;
-    for (int i = 0; password[i] != '\0'; i++) {
-        if (isupper(password[i])) tieneMayuscula = 1;
-        if (islower(password[i])) tieneMinuscula = 1;
-    }
-    return tieneMayuscula && tieneMinuscula;
-}
 
 int emailRegistrado(const char *filename, const char *email) {
     FILE *file = fopen(filename, "rb");
