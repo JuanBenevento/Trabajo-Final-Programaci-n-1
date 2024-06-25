@@ -11,7 +11,7 @@
 #define ID_FILE "last_id.txt"
 #define MAX_LIBROS 200
 #define LIBROS_FILE "libros.dat"
-#define MAX_COMENTARIO 200
+#define MAX_COMENTARIO 500
 #define COMENTARIO_FILE "comentario.dat"
 #define MAX_FAVORITOS 100
 #define FAVORITOS_FILE "favoritos.dat"
@@ -39,6 +39,10 @@ void eliminarLibroDeFavoritos(stFavorito favoritos[], int *cantidadFavoritos, in
 void guardarFavoritos(const char *filename, stFavorito favoritos[], int cantidadFavoritos);
 int cargarFavoritos(const char *filename, stFavorito favoritos[], int maxFavoritos);
 
+void menuPrincipal(int *opcion);
+void submenuLibros(stLibro libros[], int *cantidadLibros, stComentario comentario[], int *cantidadComentario, stFavorito favoritos[], int *cantidadFavoritos, stUsuario usuario[]);
+void submenuUsuarios();
+void submenuFavoritos(stFavorito favoritos[], int *cantidadFavoritos, stLibro libros[], int cantidadLibros, int idUsuario);
 
 int main() {
     int option;
@@ -59,193 +63,19 @@ int main() {
 
 
     do {
-        printf("TP Final Programacion 1 - Propuesta de la catedra");
-        printf("\n***********************************************");
-        printf("\n");
-        printf("\n1- Iniciar sesion");
-        printf("\n2- Registrarme");
-        printf("\n0- Salir");
-        printf("\n");
-        printf("\n***********************************************");
-        printf("\nIngrese una opcion: ");
-        fflush(stdin);
-        scanf("%d", &option);
+        menuPrincipal(&option);
         system("cls");
 
         switch (option) {
             case 1:
                 if (iniciarSesion("usuarios.dat", &usuarioLogueado)) {
                     printf("\nInicio de sesion exitoso.\n");
-                    int opcion;
-                do {
-                        printf("\n**************************************************");
-                        printf("\n");
-                        printf("\n1- Agregar Libro.");
-                        printf("\n2- Mostrar Libros.");
-                        printf("\n3- Mostrar Libros por Categoria.");
-                        printf("\n4- Mostrar Libros por Autor.");
-                        printf("\n5- Buscar Libros por Titulo.");
-                        printf("\n6- Agregar libro a favoritos");
-                        printf("\n7- Eliminar libro de favoritos");
-                        printf("\n8- Mostrar lista de favoritos");
-                        printf("\n9- Modificar Informacion Personal.");
-                        if (usuarioLogueado.esAdmin) {
-                            printf("\n10- Ver Todos los Usuarios.");
-                            printf("\n11- Dar de Baja Usuario.");
-                            printf("\n12- Eliminar Libro.");
-                        }
-                        printf("\n0- Salir");
-                        printf("\n");
-                        printf("\n***************************************************");
-                        printf("\nIngrese una opcion: ");
-                        printf("\n");
-                        fflush(stdin);
-                        scanf("%d", &opcion);
-                        system("cls");//getchar(); // para consumir el salto de línea después de scanf
-
-                        switch (opcion) {
-                            case 1: {
-                                stLibro nuevoLibro = agregarLibro();
-                                agregarLibroLista(libros, &cantidadLibros, nuevoLibro);
-                                guardarLibros(LIBROS_FILE, libros, cantidadLibros); // Usar LIBROS_FILE
-                                break;
-                            }
-                            case 2:
-                                calcularPromedioPuntajes(comentario, cantidadComentario, libros, cantidadLibros);
-                                mostrarLibrosConComentarios(libros, cantidadLibros, comentario, cantidadComentario);
-                                int elegir;
-                                do{
-                                        printf("\n***********************************************");
-                                        printf("\n");
-                                        printf("\n1- Comentar libro");
-                                        printf("\n2- Modificar comentario");
-                                        printf("\n3- Eliminar comentario");
-                                        printf("\n0- Salir");
-                                        printf("\n");
-                                        printf("\n***********************************************");
-                                        printf("\nIngrese una opcion: ");
-                                        printf("\n");
-                                        fflush(stdin);
-                                        scanf("%d", &elegir);
-
-                                    switch(elegir){
-                                        case 1:;
-                                            stComentario nuevoComentario = agregarComentario();
-                                            agregarComentarioLista(comentario, &cantidadComentario, nuevoComentario);
-                                            guardarComentario(COMENTARIO_FILE, comentario, cantidadComentario);
-                                            guardarLibros(LIBROS_FILE, libros, cantidadLibros);
-                                            break;
-                                        case 2: {
-                                            int idComentario;
-                                            char contr[20];
-                                            printf("Ingrese el ID del comentario a modificar: ");
-                                            fflush(stdin);
-                                            scanf("%d", &idComentario);
-                                            printf("Ingrese su contrasenia de usuario: ");
-                                            fflush(stdin);
-                                            scanf("%s", contr);
-                                            modificarComentario(comentario, cantidadComentario, idComentario, COMENTARIO_FILE, contr);
-                                            break;
-                                        }
-                                        case 3: {
-                                            int idComentario;
-                                            char contr[20];
-                                            printf("Ingrese el ID del comentario a eliminar: ");
-                                            fflush(stdin);
-                                            scanf("%d", &idComentario);
-                                            printf("Ingrese su contrasenia de usuario: ");
-                                            fflush(stdin);
-                                            scanf("%s", contr);
-                                            eliminarComentario(comentario, &cantidadComentario, idComentario, COMENTARIO_FILE, contr);
-                                            break;
-                                        }
-                                    }
-                                }while (elegir != 0);
-                                break;
-                            case 3: {
-                                char categoria[50];
-                                printf("\nBuscar respetando mayusculas y minusculas del titulo.\n");
-                                printf("Ingrese la categoria: ");
-                                fgets(categoria, 50, stdin);
-                                categoria[strcspn(categoria, "\n")] = '\0';
-                                mostrarLibrosPorCategoria(libros, cantidadLibros, categoria);
-                                break;
-                            }
-                            case 4: {
-                                char autor[50];
-                                printf("\nBuscar respetando mayusculas y minusculas del titulo.\n");
-                                printf("Ingrese el autor: ");
-                                fgets(autor, 50, stdin);
-                                autor[strcspn(autor, "\n")] = '\0';
-                                mostrarLibrosPorAutor(libros, cantidadLibros, autor);
-                                break;
-                            }
-                            case 5: {
-                                char titulo[100];
-                                printf("\nBuscar respetando mayusculas y minusculas del titulo.\n");
-                                printf("Ingrese el titulo: ");
-                                fgets(titulo, 100, stdin);
-                                titulo[strcspn(titulo, "\n")] = '\0';
-                                buscarLibrosPorTitulo(libros, cantidadLibros, titulo);
-                                break;
-                            }
-                            case 6: {
-                                mostrarLibros(libros, cantidadLibros);
-                                int idLibro;
-                                printf("Ingrese el ID del libro a agregar a favoritos: ");
-                                scanf("%d", &idLibro);
-                                stLibro libro;
-                                for (int i = 0; i < cantidadLibros; i++) {
-                                    if (libros[i].idLibro == idLibro) {
-                                        libro = libros[i];
-                                        break;
-                                    }
-                                }
-                                agregarLibroAFavoritos(favoritos, &cantidadFavoritos, usuarioLogueado.idUsuario, libro, usuarioLogueado.librosFavoritos);
-                                guardarFavoritos(FAVORITOS_FILE, favoritos, cantidadFavoritos);
-                                break;
-                            }
-                            case 7: {
-                                mostrarLibrosFavoritos(favoritos, cantidadFavoritos, libros, cantidadLibros, usuarioLogueado.idUsuario);
-                                int idLibro;
-                                printf("Ingrese el ID del libro a eliminar de favoritos: ");
-                                scanf("%d", &idLibro);
-                                eliminarLibroDeFavoritos(favoritos, &cantidadFavoritos, usuarioLogueado.idUsuario, idLibro);
-                                guardarFavoritos(FAVORITOS_FILE, favoritos, cantidadFavoritos);
-                                break;
-                            }
-                            case 8:
-                                mostrarLibrosFavoritos(favoritos, cantidadFavoritos, libros, cantidadLibros, usuarioLogueado.idUsuario);
-                                break;
-                            case 9:
-                                modificarInformacionPersonal("usuarios.dat", &usuarioLogueado);
-                                break;
-                            case 10:
-                                if (usuarioLogueado.esAdmin) {
-                                    mostrarTodosUsuarios("usuarios.dat");
-                                }
-                                break;
-                            case 11:
-                                if (usuarioLogueado.esAdmin) {
-                                    darDeBajaUsuario("usuarios.dat");
-                                }
-                                break;
-                            case 12:
-                                if (usuarioLogueado.esAdmin) {
-                                    int idLibro;
-                                    printf("Ingrese el ID del libro a eliminar definitivamente: ");
-                                    scanf("%d", &idLibro);
-                                    eliminarLibroDefinitivamente(libros, &cantidadLibros, idLibro, LIBROS_FILE);
-                                }
-                                break;
-                            default:
-                                if (opcion != 0) {
-                                    printf("\nOpcion no valida.\n");
-                                }
-                                break;
-                        }
-                    } while (opcion != 0 && usuarioLogueado.idUsuario != 0);
-
+                    int submenuOption;
+                    do {
+                        submenuLibros(libros, &cantidadLibros, comentario, &cantidadComentario, favoritos, &cantidadFavoritos, &usuarioLogueado);
+                        submenuUsuarios(&usuarioLogueado);
+                        submenuFavoritos(favoritos, &cantidadFavoritos, libros, cantidadLibros, usuarioLogueado.idUsuario);
+                    } while (submenuOption != 0 && usuarioLogueado.idUsuario != 0);
                 } else {
                     printf("\nError en el inicio de sesion.\n");
                 }
@@ -263,6 +93,208 @@ int main() {
     } while (option != 0);
 
     return 0;
+}
+
+void menuPrincipal(int *opcion) {
+    printf("TP Final Programacion 1 - Propuesta de la catedra\n");
+    printf("***********************************************\n");
+    printf("\n1- Iniciar sesion\n");
+    printf("2- Registrarme\n");
+    printf("0- Salir\n");
+    printf("\n***********************************************\n");
+    printf("\nIngrese una opcion: ");
+    fflush(stdin);
+    scanf("%d", opcion);
+    system("cls");
+}
+
+void submenuLibros(stLibro libros[], int *cantidadLibros, stComentario comentario[], int *cantidadComentario, stFavorito favoritos[], int *cantidadFavoritos, stUsuario usuarioLogueado[]) {
+    int submenuOption;
+    do {
+        printf("\n**************************************************\n");
+        printf("\n1- Agregar Libro.\n");
+        printf("2- Mostrar Libros.\n");
+        printf("3- Mostrar Libros por Categoria.\n");
+        printf("4- Mostrar Libros por Autor.\n");
+        printf("5- Buscar Libros por Titulo.\n");
+        printf("6- Agregar libro a favoritos\n");
+        printf("7- Eliminar libro de favoritos\n");
+        printf("8- Mostrar lista de favoritos\n");
+        printf("9- Modificar Informacion Personal.\n");
+        printf("10- Volver al menu principal.\n");
+        printf("\n***************************************************\n");
+        printf("\nIngrese una opcion: ");
+        fflush(stdin);
+        scanf("%d", &submenuOption);
+        system("cls");
+
+        switch (submenuOption) {
+            case 1: {
+                stLibro nuevoLibro = agregarLibro();
+                agregarLibroLista(libros, cantidadLibros, nuevoLibro);
+                guardarLibros(LIBROS_FILE, libros, *cantidadLibros);
+                break;
+            }
+            case 2:
+                calcularPromedioPuntajes(comentario, *cantidadComentario, libros, *cantidadLibros);
+                mostrarLibrosConComentarios(libros, *cantidadLibros, comentario, *cantidadComentario);
+                break;
+            case 3: {
+                char categoria[50];
+                printf("Buscar respetando mayusculas y minusculas del titulo.\n");
+                printf("Ingrese la categoria: ");
+                fflush(stdin);
+                fgets(categoria, 50, stdin);
+                categoria[strcspn(categoria, "\n")] = '\0';
+                mostrarLibrosPorCategoria(libros, *cantidadLibros, categoria);
+                break;
+            }
+            case 4: {
+                char autor[50];
+                printf("Buscar respetando mayusculas y minusculas del titulo.\n");
+                printf("Ingrese el autor: ");
+                fflush(stdin);
+                fgets(autor, 50, stdin);
+                autor[strcspn(autor, "\n")] = '\0';
+                mostrarLibrosPorAutor(libros, *cantidadLibros, autor);
+                break;
+            }
+            case 5: {
+                char titulo[100];
+                printf("Buscar respetando mayusculas y minusculas del titulo.\n");
+                printf("Ingrese el titulo: ");
+                fflush(stdin);
+                fgets(titulo, 100, stdin);
+                titulo[strcspn(titulo, "\n")] = '\0';
+                buscarLibrosPorTitulo(libros, *cantidadLibros, titulo);
+                break;
+            }
+            case 6: {
+                mostrarLibros(libros, *cantidadLibros);
+                int idLibro;
+                printf("Ingrese el ID del libro a agregar a favoritos: ");
+                scanf("%d", &idLibro);
+                stLibro libro;
+                for (int i = 0; i < *cantidadLibros; i++) {
+                    if (libros[i].idLibro == idLibro) {
+                        libro = libros[i];
+                        break;
+                    }
+                }
+                agregarLibroAFavoritos(favoritos, cantidadFavoritos, usuarioLogueado->idUsuario, libro, usuarioLogueado->librosFavoritos);
+                guardarFavoritos(FAVORITOS_FILE, favoritos, *cantidadFavoritos);
+                break;
+            }
+            case 7: {
+                mostrarLibros(libros, *cantidadLibros);
+                int idLibro;
+                printf("Ingrese el ID del libro a eliminar de favoritos: ");
+                scanf("%d", &idLibro);
+                eliminarLibroDeFavoritos(favoritos, cantidadFavoritos, usuarioLogueado->idUsuario, idLibro);
+                guardarFavoritos(FAVORITOS_FILE, favoritos, *cantidadFavoritos);
+                break;
+            }
+            case 8:
+                mostrarLibrosFavoritos(favoritos, *cantidadFavoritos, libros, *cantidadLibros, usuarioLogueado->idUsuario);
+                break;
+            case 9:
+                modificarInformacionPersonal("usuarios.dat", &usuarioLogueado);
+                break;
+            case 10:
+                printf("\nVolviendo al menu principal...\n");
+                break;
+            default:
+                printf("\nOpcion no valida.\n");
+                break;
+        }
+    } while (submenuOption != 10);
+}
+
+void submenuUsuarios(stUsuario usuarioLogueado[]) {
+    int submenuOption;
+    do {
+        printf("\n**************************************************\n");
+        printf("\n1- Dar de baja usuario\n");
+        printf("2- Modificar informacion personal\n");
+        printf("3- Desloguearse\n");
+        printf("4- Volver al menu principal\n");
+        printf("\n***************************************************\n");
+        printf("\nIngrese una opcion: ");
+        fflush(stdin);
+        scanf("%d", &submenuOption);
+        system("cls");
+
+        switch (submenuOption) {
+            case 1:
+                darDeBajaUsuario("usuarios.dat");
+                break;
+            case 2:
+                modificarInformacionPersonal("usuarios.dat", usuarioLogueado);
+                break;
+            case 3:
+                desloguearse(&usuarioLogueado);
+                break;
+            case 4:
+                printf("\nVolviendo al menu principal...\n");
+                break;
+            default:
+                printf("\nOpcion no valida.\n");
+                break;
+        }
+    } while (submenuOption != 4);
+}
+
+void submenuFavoritos(stFavorito favoritos[], int *cantidadFavoritos, stLibro libros[], int cantidadLibros, int idUsuario) {
+    int submenuOption;
+    do {
+        printf("\n**************************************************\n");
+        printf("\n1- Agregar libro a favoritos\n");
+        printf("2- Eliminar libro de favoritos\n");
+        printf("3- Mostrar lista de favoritos\n");
+        printf("4- Volver al menu principal\n");
+        printf("\n***************************************************\n");
+        printf("\nIngrese una opcion: ");
+        fflush(stdin);
+        scanf("%d", &submenuOption);
+        system("cls");
+
+        switch (submenuOption) {
+            case 1: {
+                mostrarLibros(libros, cantidadLibros);
+                int idLibro;
+                printf("Ingrese el ID del libro a agregar a favoritos: ");
+                scanf("%d", &idLibro);
+                stLibro libro;
+                for (int i = 0; i < cantidadLibros; i++) {
+                    if (libros[i].idLibro == idLibro) {
+                        libro = libros[i];
+                        break;
+                    }
+                }
+                agregarLibroAFavoritos(favoritos, cantidadFavoritos, idUsuario, libro, cantidadLibros);
+                guardarFavoritos(FAVORITOS_FILE, favoritos, *cantidadFavoritos);
+                break;
+            }
+            case 2: {
+                mostrarLibrosFavoritos(favoritos, *cantidadFavoritos, libros, cantidadLibros, idUsuario);
+                int idLibro;
+                printf("Ingrese el ID del libro a eliminar de favoritos: ");
+                scanf("%d", &idLibro);
+                eliminarLibroDeFavoritos(favoritos, cantidadFavoritos, idUsuario, idLibro);
+                guardarFavoritos(FAVORITOS_FILE, favoritos, *cantidadFavoritos);
+                break;
+            }
+            case 3:
+                mostrarLibrosFavoritos(favoritos, *cantidadFavoritos, libros, cantidadLibros, idUsuario);
+                break;
+            case 4:
+                printf("\nVolviendo al menu principal...\n");
+                break;
+            default:
+                printf("\nOpcion no valida.\n");
+                break;
+        }
+    } while (submenuOption != 4);
 }
 
 int leerUltimoIdUsuario(const char *filename) {
@@ -313,10 +345,10 @@ int iniciarSesion(const char *filename, stUsuario *usuarioLogueado) {
     char password[20];
     stUsuario usuario;
 
-    printf("\nIngrese su email: ");
+    printf("Ingrese su email: ");
     fflush(stdin);
     scanf("%s", email);
-    printf("\nIngrese su contrasenia: ");
+    printf("Ingrese su contrasenia: ");
     fflush(stdin);
     scanf("%s", password);
 
@@ -341,7 +373,7 @@ int iniciarSesion(const char *filename, stUsuario *usuarioLogueado) {
 void modificarInformacionPersonal(const char *filename, stUsuario *usuarioLogueado) {
 
    do {
-        printf("\nIngrese su email: ");
+        printf("Ingrese su nuevo email: ");
         fflush(stdin);
         gets(usuarioLogueado->email);
         if (!validarEmail(usuarioLogueado->email)){
@@ -350,7 +382,7 @@ void modificarInformacionPersonal(const char *filename, stUsuario *usuarioLoguea
     } while (!validarEmail(usuarioLogueado->email) || emailRegistrado("usuarios.dat", usuarioLogueado->email));
 
     do {
-        printf("\nIngrese su contrasenia: ");
+        printf("Ingrese su nueva contrasenia: ");
         fflush(stdin);
         gets(usuarioLogueado->password);
         if (!validarPassword(usuarioLogueado->password)){

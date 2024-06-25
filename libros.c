@@ -96,7 +96,7 @@ void eliminarLibro(stLibro libros[], int *cantidad, int idLibro) {
     }
 }
 
-void mostrarLibrosPorCategoria(stLibro libros[], int cantidad, const char *categoria) {
+void mostrarLibrosPorCategoria(stLibro libros[], int cantidad, char categoria[]) {
     for (int i = 0; i < cantidad; i++) {
         if (libros[i].eliminado == 0 && strcmp(libros[i].categoria, categoria) == 0) {
             mostrarLibro(libros[i]);
@@ -104,7 +104,7 @@ void mostrarLibrosPorCategoria(stLibro libros[], int cantidad, const char *categ
     }
 }
 
-void mostrarLibrosPorAutor(stLibro libros[], int cantidad, const char *autor) {
+void mostrarLibrosPorAutor(stLibro libros[], int cantidad, char autor[]) {
     for (int i = 0; i < cantidad; i++) {
         if (libros[i].eliminado == 0 && strcmp(libros[i].autor, autor) == 0) {
             mostrarLibro(libros[i]);
@@ -112,7 +112,7 @@ void mostrarLibrosPorAutor(stLibro libros[], int cantidad, const char *autor) {
     }
 }
 
-void buscarLibrosPorTitulo(stLibro libros[], int cantidad, const char *titulo) {
+void buscarLibrosPorTitulo(stLibro libros[], int cantidad, char titulo[]) {
     for (int i = 0; i < cantidad; i++) {
         if (libros[i].eliminado == 0 && strstr(libros[i].titulo, titulo) != NULL) {
             mostrarLibro(libros[i]);

@@ -32,11 +32,12 @@ stComentario agregarComentario() {
 
 
     printf("Ingrese la descripcion del comentario: ");
+    fflush(stdin);
     fgets(nuevoComentario.descripcion, sizeof(nuevoComentario.descripcion), stdin);
-
     if (nuevoComentario.descripcion[strlen(nuevoComentario.descripcion) - 1] == '\n') {
         nuevoComentario.descripcion[strlen(nuevoComentario.descripcion) - 1] = '\0';
     }
+
 
     do {
         printf("Ingrese la valoracion del libro (0-5): ");
@@ -54,23 +55,11 @@ stComentario agregarComentario() {
     return nuevoComentario;
 }
 
-/*int validarPassword(const char *password) {  //A esta funcion le podemos agregar un minimo de caracteres tambien
-    int tieneMayuscula = 0;
-    int tieneMinuscula = 0;
-    for (int i = 0; password[i] != '\0'; i++) {
-        if (isupper(password[i])) tieneMayuscula = 1;
-        if (islower(password[i])) tieneMinuscula = 1;
-    }
-    return tieneMayuscula && tieneMinuscula;
-}
-*/
-// Función para mostrar la información de un comentario
-
 void mostrarComentario(stComentario comentario) {
 
         printf("\n.................................................\n");
         printf("\nID Comentario: %d\n", comentario.idComentario);
-        printf("ID Libro: %d\n", comentario.idLibro);
+        //printf("ID Libro: %d\n", comentario.idLibro);
         //printf("contrasenia: %s\n", comentario.password);
         printf("Nombre de usuario: %s\n", comentario.nombreUsuario);
         printf("Descripcion: %s\n", comentario.descripcion);
@@ -88,7 +77,7 @@ void mostrarComentarios(stComentario comentario[], int cantidad) {
 
 int cargarComentario(const char *filename, stComentario comentario[], int maxComentario) {
     int cantidad = 0;
-    FILE *file = fopen(filename, "r+b");
+    FILE *file = fopen(filename, "rb");
     if (file != NULL) {
         while (fread(&comentario[cantidad], sizeof(stComentario), 1, file) > 0 && cantidad < maxComentario) {
             if (comentario[cantidad].idComentario > idComentarioCounter) {
@@ -112,7 +101,20 @@ void guardarComentario(const char *filename, stComentario comentario[], int cant
 }
 
 void agregarComentarioLista(stComentario comentario[], int *cantidad, stComentario nuevoComentario) {
-    comentario[*cantidad] = nuevoComentario;
-    (*cantidad)++;
+    // Verificar si el comentario ya existe antes de agregarlo
+    int existe = 0;
+    for (int i = 0; i < *cantidad; i++) {
+        if (comentario[i].idComentario == nuevoComentario.idComentario) {
+            // Ya existe un comentario con el mismo ID, no agregar
+            existe = 1;
+            break;
+        }
+    }
+    if (!existe) {
+        // Agregar el nuevo comentario solo si no existe
+        comentario[*cantidad] = nuevoComentario;
+        (*cantidad)++;
+    } else {
+        printf("Ya existe un comentario con el mismo ID.\n");
+    }
 }
-
