@@ -7,32 +7,30 @@ stDomicilio cargaUnDomicilio(){
 
     char aux [1000];
 
-    printf("\n Ingrese la calle:  ");
+    printf("Ingrese la calle:  ");
     fflush(stdin);
     gets(domicilio.calle);
 //    scanf("%s",&aux);
 //    strcpy(domicilio.calle,aux);
 
-    printf("\n Ingrese la altura: ");
+    printf("Ingrese la altura: ");
     scanf("%d",&domicilio.altura);
 
-    printf("\n Ingrese el codigo postal: ");
+    printf("Ingrese el codigo postal: ");
     scanf("%d",&domicilio.cp);
 
-    printf("\n Ingrese la ciudad:  ");
+    printf("Ingrese la ciudad:  ");
     fflush(stdin);
-    scanf("%s",&aux);
-    strcpy(domicilio.ciudad,aux);
+    gets(domicilio.ciudad);
 
-    printf("\n Ingrese la provincia:  ");
+    printf("Ingrese la provincia:  ");
     fflush(stdin);
-    scanf("%s",&aux);
-    strcpy(domicilio.localidad,aux);
+    gets(domicilio.localidad);
 
-    printf("\n Ingrese el pais:  ");
+    printf("Ingrese el pais:  ");
     fflush(stdin);
-    scanf("%s",&aux);
-    strcpy(domicilio.pais,aux);
+    gets(domicilio.pais);
+
 
     return domicilio;
 
@@ -51,3 +49,4 @@ void mostrarUnDomicilio(stDomicilio domicilio){
     printf("\n**********************************************");
 
 }
+

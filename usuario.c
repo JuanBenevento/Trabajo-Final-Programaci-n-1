@@ -12,7 +12,7 @@ stUsuario cargarUnUsuario(int idUsuario) {
     char aux[100];
 
     do {
-        printf("\nIngrese su email: ");
+        printf("Ingrese su email: ");
         fflush(stdin);
         gets(usuario.email);
         if (!validarEmail(usuario.email)){
@@ -21,7 +21,7 @@ stUsuario cargarUnUsuario(int idUsuario) {
     } while (!validarEmail(usuario.email) || emailRegistrado("usuarios.dat", usuario.email));
 
     do {
-        printf("\nIngrese su contrasenia: ");
+        printf("Ingrese su contrasenia: ");
         fflush(stdin);
         gets(usuario.password);
         if (!validarPassword(usuario.password)){
@@ -29,34 +29,29 @@ stUsuario cargarUnUsuario(int idUsuario) {
         }
     } while (!validarPassword(usuario.password));
 
-    printf("\nIngrese el nombre de usuario: ");
+    printf("Ingrese el nombre de usuario: ");
     fflush(stdin);
     scanf("%s", usuario.username);
 
-    printf("\nIngrese el genero (M/F): ");
+    printf("Ingrese el genero (M/F): ");
     fflush(stdin);
     scanf(" %c", &usuario.genero);
 
-    printf("\nIngrese la fecha de nacimiento (DD-MM-AAAA): ");
+    printf("Ingrese la fecha de nacimiento (DD-MM-AAAA): ");
     fflush(stdin);
     scanf("%s", usuario.fechaNacimiento);
 
-    printf("\nIngrese el DNI: ");
+    printf("Ingrese el DNI: ");
     fflush(stdin);
     scanf("%s", usuario.dni);
 
     usuario.domicilio = cargaUnDomicilio();
 
-    printf("\nIngrese si es administrador (1 = Si, 0 = No): ");
+    printf("Ingrese si es administrador (1 = Si, 0 = No): ");
     scanf("%d", &usuario.esAdmin);
 
 
     usuario.eliminado = 0;
-
-    // Inicializar libros favoritos con -1 (indicando vacio)
-    for (int i = 0; i < 50; i++) {
-        usuario.librosFavoritos[i] = -1;
-    }
 
     usuario.idUsuario = idUsuario; // Asignar el ID del usuario
 
@@ -75,20 +70,6 @@ void mostrarUnUsuario(stUsuario usuario) {
         printf("\nDNI:...........................%s", usuario.dni);
         mostrarUnDomicilio(usuario.domicilio);
         printf("\nAdministrador:.................%s", usuario.esAdmin ? "Si" : "No");
-        printf("\nLibros Favoritos:..............");
-
-        int i;
-        for (i = 0; i < 50; i++) {
-            if (usuario.librosFavoritos[i] != -1) {
-                printf("%d ", usuario.librosFavoritos[i]);
-            } else {
-                break;
-            }
-        }
-        if (i == 0) {
-            printf("Ninguno");
-        }
-
         printf("\n**********************************************\n");
     }
 }
@@ -141,3 +122,4 @@ int emailRegistrado(const char *filename, const char *email) {
     }
     return 0;
 }
+
