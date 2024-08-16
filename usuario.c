@@ -1,4 +1,3 @@
-#include "usuario.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,53 +8,50 @@
 // Funcion para cargar un usuario
 stUsuario cargarUnUsuario(int idUsuario) {
     stUsuario usuario;
-    usuario.idUsuario = idUsuario;
 
     char aux[100];
-    printf("\n***********************************************");
-    printf("\n");
 
     do {
-        printf("\nIngrese su email: ");
+        printf("Ingrese su email: ");
         fflush(stdin);
         gets(usuario.email);
+        if (!validarEmail(usuario.email)){
+            printf("Email no valido.");
+        }
     } while (!validarEmail(usuario.email) || emailRegistrado("usuarios.dat", usuario.email));
 
     do {
-        printf("\nIngrese su contrasenia: ");
+        printf("Ingrese su contrasenia: ");
         fflush(stdin);
         gets(usuario.password);
+        if (!validarPassword(usuario.password)){
+            printf("Contrasenia no valida.");
+        }
     } while (!validarPassword(usuario.password));
 
-    printf("\nIngrese el nombre de usuario: ");
+    printf("Ingrese el nombre de usuario: ");
     fflush(stdin);
     scanf("%s", usuario.username);
 
-    printf("\nIngrese el genero (M/F): ");
+    printf("Ingrese el genero (M/F): ");
     fflush(stdin);
     scanf(" %c", &usuario.genero);
 
-    printf("\nIngrese la fecha de nacimiento (DD-MM-AAAA): ");
-    fflush(stdin);
-    scanf("%s", usuario.fechaNacimiento);
+    pedirFecha(usuario.fechaNacimiento);
 
-    printf("\nIngrese el DNI: ");
+    printf("Ingrese el DNI: ");
     fflush(stdin);
     scanf("%s", usuario.dni);
 
     usuario.domicilio = cargaUnDomicilio();
 
-    /*printf("\nIngrese si es administrador (1 = Si, 0 = No): ");
+    printf("Ingrese si es administrador (1 = Si, 0 = No): ");
     scanf("%d", &usuario.esAdmin);
-    printf("\n");
-    printf("\n***********************************************");
-    */
+
+
     usuario.eliminado = 0;
 
-    // Inicializar libros favoritos con -1 (indicando vacio)
-    for (int i = 0; i < 50; i++) {
-        usuario.librosFavoritos[i] = -1;
-    }
+    usuario.idUsuario = idUsuario; // Asignar el ID del usuario
 
     return usuario;
 }
@@ -66,49 +62,27 @@ void mostrarUnUsuario(stUsuario usuario) {
         printf("\n**********************************************");
         printf("\nID Usuario:....................%d", usuario.idUsuario);
         printf("\nEmail:.........................%s", usuario.email);
+        printf("\nContrasenia:...................%s", usuario.password);
         printf("\nNombre de Usuario:.............%s", usuario.username);
         printf("\nGenero:........................%c", usuario.genero);
         printf("\nFecha de Nacimiento:...........%s", usuario.fechaNacimiento);
         printf("\nDNI:...........................%s", usuario.dni);
         mostrarUnDomicilio(usuario.domicilio);
-        printf("\nAdministrador:.................%s", usuario.esAdmin ? "Sí" : "No");
-        printf("\nLibros Favoritos:..............");
-
-        int i;
-        for (i = 0; i < 50; i++) {
-            if (usuario.librosFavoritos[i] != -1) {
-                printf("%d ", usuario.librosFavoritos[i]);
-            } else {
-                break;
-            }
-        }
-        if (i == 0) {
-            printf("Ninguno");
-        }
-
+        printf("\nAdministrador:.................%s", usuario.esAdmin ? "Si" : "No");
         printf("\n**********************************************\n");
     }
 }
 
-// Funcion para agregar un libro favorito a un usuario
-void agregarLibroFavorito(stUsuario* usuario, int idLibro) {
-    for (int i = 0; i < 50; i++) {
-        if (usuario->librosFavoritos[i] == -1) {
-            usuario->librosFavoritos[i] = idLibro;
-            break;
-        }
+int validarPassword(const char *password) {  //A esta funcion le podemos agregar un minimo de caracteres tambien
+    int tieneMayuscula = 0;
+    int tieneMinuscula = 0;
+    for (int i = 0; password[i] != '\0'; i++) {
+        if (isupper(password[i])) tieneMayuscula = 1;
+        if (islower(password[i])) tieneMinuscula = 1;
     }
+    return tieneMayuscula && tieneMinuscula;
 }
 
-// Funcion para eliminar un libro favorito de un usuario
-void eliminarLibroFavorito(stUsuario* usuario, int idLibro) {
-    for (int i = 0; i < 50; i++) {
-        if (usuario->librosFavoritos[i] == idLibro) {
-            usuario->librosFavoritos[i] = -1;
-            break;
-        }
-    }
-}
 
 // Funcion para marcar un usuario como eliminado
 void eliminarUsuario(stUsuario* usuario) {
@@ -132,15 +106,6 @@ int validarEmail(const char *email) {
     return strstr(email, "@") && strstr(email, ".com");
 }
 
-int validarPassword(const char *password) {  //A esta funcion le podemos agregar un minimo de caracteres tambien
-    int tieneMayuscula = 0;
-    int tieneMinuscula = 0;
-    for (int i = 0; password[i] != '\0'; i++) {
-        if (isupper(password[i])) tieneMayuscula = 1;
-        if (islower(password[i])) tieneMinuscula = 1;
-    }
-    return tieneMayuscula && tieneMinuscula;
-}
 
 int emailRegistrado(const char *filename, const char *email) {
     FILE *file = fopen(filename, "rb");
@@ -156,3 +121,4 @@ int emailRegistrado(const char *filename, const char *email) {
     }
     return 0;
 }
+

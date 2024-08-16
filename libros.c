@@ -3,6 +3,7 @@
 #include <string.h>
 #include "libros.h"
 
+
 // Variable global para llevar el conteo del ID de los libros
 int idLibroCounter = 0;
 
@@ -39,12 +40,14 @@ stLibro agregarLibro() {
 
 void mostrarLibro(stLibro libro) {
     if (libro.eliminado == 0) {
+        printf("\n|||||||||||||||||||||||||||||||||||||||||||\n");
         printf("ID: %d\n", libro.idLibro);
         printf("Titulo: %s\n", libro.titulo);
         printf("Editorial: %s\n", libro.editorial);
         printf("Autor: %s\n", libro.autor);
         printf("Categoria: %s\n", libro.categoria);
         printf("Valoracion: %.2f\n", libro.valoracion);
+        printf("\n|||||||||||||||||||||||||||||||||||||||||||\n");
     }
 }
 
@@ -93,7 +96,7 @@ void eliminarLibro(stLibro libros[], int *cantidad, int idLibro) {
     }
 }
 
-void mostrarLibrosPorCategoria(stLibro libros[], int cantidad, const char *categoria) {
+void mostrarLibrosPorCategoria(stLibro libros[], int cantidad, char categoria[]) {
     for (int i = 0; i < cantidad; i++) {
         if (libros[i].eliminado == 0 && strcmp(libros[i].categoria, categoria) == 0) {
             mostrarLibro(libros[i]);
@@ -101,7 +104,7 @@ void mostrarLibrosPorCategoria(stLibro libros[], int cantidad, const char *categ
     }
 }
 
-void mostrarLibrosPorAutor(stLibro libros[], int cantidad, const char *autor) {
+void mostrarLibrosPorAutor(stLibro libros[], int cantidad, char autor[]) {
     for (int i = 0; i < cantidad; i++) {
         if (libros[i].eliminado == 0 && strcmp(libros[i].autor, autor) == 0) {
             mostrarLibro(libros[i]);
@@ -109,7 +112,7 @@ void mostrarLibrosPorAutor(stLibro libros[], int cantidad, const char *autor) {
     }
 }
 
-void buscarLibrosPorTitulo(stLibro libros[], int cantidad, const char *titulo) {
+void buscarLibrosPorTitulo(stLibro libros[], int cantidad, char titulo[]) {
     for (int i = 0; i < cantidad; i++) {
         if (libros[i].eliminado == 0 && strstr(libros[i].titulo, titulo) != NULL) {
             mostrarLibro(libros[i]);
